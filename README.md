@@ -1,2 +1,2 @@
 # algolia
-Code samples &amp; useful tools for Algolia
+Code samples and useful tools for Algolia
