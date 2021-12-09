@@ -1,0 +1,34 @@
+{
+
+  "name": "tmdb-datasetbuilder",
+
+  "version": "0.0.1",
+
+  "description": "This application allow you to export a JSON dataset from The Movie Database",
+
+  "main": "app.js",
+
+  "devDependencies": {},
+
+  "dependencies": {
+
+    "cli-progress": "^3.9.1",
+
+    "themoviedb-api-client": "^1.1.0",
+
+    "yargs": "^17.3.0"
+
+  },
+
+  "scripts": {
+
+    "test": "echo \"Error: no test specified\" && exit 1"
+
+  },
+
+  "author": "",
+
+  "license": "ISC"
+
+}
+
