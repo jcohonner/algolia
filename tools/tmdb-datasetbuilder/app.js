@@ -7,7 +7,12 @@ const fs = require('fs');
 const outputFileBaseName = './output/movies';
 
 const tmdb = require('themoviedb-api-client')(process.env.TMDB_API_KEY);
-const languages = ['en-US', 'fr-FR'];
+const languages = ['en-US', 'fr-FR', 'de-DE', 'it-IT', 'es-ES'];
+const prices = require('./prices.json');
+const includePrices = true;
+const featuredMovies = require('./featured-movies.json');
+const includeFeatured = true;
+const maxPages = 500; //override for debug purposes API max value: 500
 
 function getImageURL(path) {
     return `https://image.tmdb.org/t/p/w500${path}`;
@@ -15,6 +20,10 @@ function getImageURL(path) {
 
 function dateToTimestamp(date) {
     return (new Date(date).getTime())/1000;
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
 }
 
 async function buildMovie(movie) {
@@ -45,8 +54,25 @@ async function buildMovie(movie) {
         },
         poster_path_translations: {
             [languages[0]]: getImageURL(movieDetails.poster_path),
-        }
+        },
+        budget: movieDetails.budget,
+        revenue: movieDetails.revenue
     }
+
+    if (includePrices) {
+        //10% of the time, we add an on sale price
+        const priceMod = (Math.random() <= 0.1)?'sales':'standard';
+        const priceData = prices[priceMod][getRandomInt(prices[priceMod].length)];
+        movieData.price = priceData.price;
+        movieData.original_price = priceData.original_price;
+        movieData.on_sale  = priceData.on_sale;
+        
+    }
+
+    if (includeFeatured) {
+        movieData.featured = featuredMovies.includes(movieData.id);
+    }
+    
 
     await Promise.all(languages.slice(1).map(async (language) => {
         const {body : movieDetailLang} = await tmdb.movieInfo({id: movie.id, language: language});
@@ -68,13 +94,13 @@ async function exportMovies() {
     let {body: {results, total_pages} } = await tmdb.discoverMovie({page: page, include_adult:false });
     let movies = [];
     
-    //total_pages = 5;//debug override
-    const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-    bar1.start(total_pages, 0);
+    total_pages = Math.min(maxPages,total_pages);
+    const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+    progressBar.start(total_pages, 0);
 
 
     while (results.length) {
-        bar1.update(page);
+        progressBar.update(page);
 
         movies.push(... await Promise.all(results.map(buildMovie)));
 
@@ -88,7 +114,7 @@ async function exportMovies() {
         
     };
 
-    bar1.stop();
+    progressBar.stop();
 
     fs.writeFileSync(outputFileBaseName+'.json', JSON.stringify(movies,null,4) , 'utf-8');
     languageSpecificExport(movies);
@@ -113,11 +139,15 @@ function languageSpecificExport(movies) {
                 title: m.title[language],
                 overview: m.overview[language],
                 genres: m.genre_translations[language],
+                price: m.price,
+                original_price: m.original_price,
+                on_sale: m.on_sale,
+                featured: m.featured,
+                budget: m.budget,
+                revenue: m.revenue
             }
         }),null,4) , 'utf-8');
     });
 }
-
-
 
 exportMovies();

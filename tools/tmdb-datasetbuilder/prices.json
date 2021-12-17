@@ -1,0 +1,36 @@
+{
+    "sales" : [
+        {
+            "price": 2.99,
+            "original_price": 9.99,
+            "on_sale": true
+        },
+        {
+            "price": 2.99,
+            "original_price": 7.99,
+            "on_sale": true
+        },
+        {
+            "price": 4.99,
+            "original_price": 9.99,
+            "on_sale": true
+        }
+    ],
+    "standard": [
+        {
+            "price": 9.99,
+            "original_prie": 9.99,
+            "on_sale": false
+        },
+        {
+            "price": 7.99,
+            "original_prie": 7.99,
+            "on_sale": false
+        },
+        {
+            "price": 4.99,
+            "original_prie": 4.99,
+            "on_sale": false
+        }
+    ]
+}
