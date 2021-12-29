@@ -31,7 +31,7 @@ async function buildMovie(movie) {
     const {body : movieDetails} = await tmdb.movieInfo({id: movie.id, language: languages[0], append_to_response: 'credits'});
     
     let movieData = {
-        id: movieDetails.id,
+        objectID: movieDetails.id,
         original_title: movieDetails.original_title,
         original_language: movieDetails.original_language,
         release_date: dateToTimestamp(movieDetails.release_date),
@@ -116,6 +116,7 @@ async function exportMovies() {
 
     fs.writeFileSync(outputFileBaseName+'.json', JSON.stringify(movies,null,4) , 'utf-8');
     languageSpecificExport(movies);
+    movieIDList(movies);
 
 }
 
@@ -131,5 +132,14 @@ function languageSpecificExport(movies) {
         }),null,4) , 'utf-8');
     });
 }
+
+/**
+ * This list may be used to rebuild the dataset with the exact same list of movies
+ * @param {*} movies 
+ */
+function movieIDList(movies) {
+    fs.writeFileSync(outputFileBaseName+'-ids.json', JSON.stringify(movies.map(m => m.objectID),null,4) , 'utf-8');
+}
+
 
 exportMovies();
