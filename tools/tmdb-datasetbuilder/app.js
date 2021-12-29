@@ -38,21 +38,19 @@ async function buildMovie(movie) {
         vote_average: Math.floor(movieDetails.vote_average),
         vote_count: movieDetails.vote_count,
         popularity: movieDetails.popularity,
-        year: movieDetails.release_date?.substring(0, 4),
+        year: parseInt(movieDetails.release_date?.substring(0, 4)),
         actors: movieDetails.credits?.cast?.map(a => a.name),
-        backdrop_path: getImageURL(movieDetails.backdrop_path),
-        genres: movieDetails.genres?.map(g => g.name),
-        poster_path: getImageURL(movieDetails.poster_path),
+        backdrop: getImageURL(movieDetails.backdrop_path),
         title: {
             [languages[0]]: movieDetails.title,
         },
         overview: {
             [languages[0]]: movieDetails.overview,
         },
-        genre_translations: {
+        genres: {
             [languages[0]]: movieDetails.genres?.map(g => g.name),
         },
-        poster_path_translations: {
+        poster: {
             [languages[0]]: getImageURL(movieDetails.poster_path),
         },
         budget: movieDetails.budget,
@@ -78,8 +76,8 @@ async function buildMovie(movie) {
         const {body : movieDetailLang} = await tmdb.movieInfo({id: movie.id, language: language});
         movieData.title[language] = movieDetailLang.title;
         movieData.overview[language] = movieDetailLang.overview;
-        movieData.genre_translations[language] = movieDetailLang.genres?.map(g => g.name);
-        movieData.poster_path_translations[language] = getImageURL(movieDetailLang.poster_path); 
+        movieData.genres[language] = movieDetailLang.genres?.map(g => g.name);
+        movieData.poster[language] = getImageURL(movieDetailLang.poster_path); 
     }));
 
     return movieData;
@@ -124,28 +122,12 @@ async function exportMovies() {
 function languageSpecificExport(movies) {
     languages.forEach(language => {
         fs.writeFileSync(outputFileBaseName+'-'+language+'.json', JSON.stringify(movies.map(m => {
-            return {
-                id: m.id,
-                original_title: m.original_title,
-                original_language: m.original_language,
-                release_date: m.release_date,
-                vote_average: m.vote_average,
-                vote_count: m.vote_count,
-                popularity: m.popularity,
-                year: m.year,
-                actors: m.actors,
-                backdrop_path: m.backdrop_path,
-                poster_path: m.poster_path_translations[language],
-                title: m.title[language],
-                overview: m.overview[language],
-                genres: m.genre_translations[language],
-                price: m.price,
-                original_price: m.original_price,
-                on_sale: m.on_sale,
-                featured: m.featured,
-                budget: m.budget,
-                revenue: m.revenue
-            }
+            const movie = {...m};
+            movie.title = movie.title[language];
+            movie.overview = movie.overview[language];
+            movie.genres = movie.genres[language];
+            movie.poster = movie.poster[language];
+            return movie;
         }),null,4) , 'utf-8');
     });
 }
