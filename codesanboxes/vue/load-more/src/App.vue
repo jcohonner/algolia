@@ -10,19 +10,28 @@
     <div class="container">
       <ais-instant-search
         :search-client="searchClient"
-        index-name="demo_ecommerce"
+        index-name="instant_search"
         :routing="routing"
       >
         <ais-configure :hits-per-page.camel="4" />
         <div class="search-panel">
           <div class="search-panel__filters">
             <ais-refinement-list attribute="categories" searchable />
+            <p>Sort By</p>
+            <ais-sort-by
+              :items="[
+                { value: 'instant_search', label: 'Featured' },
+                { value: 'instant_search_price_asc', label: 'Price asc.' },
+                { value: 'instant_search_price_desc', label: 'Price desc.' },
+              ]"
+            />
           </div>
 
           <div class="search-panel__results">
             <ais-search-box placeholder="Search here…" class="searchbox" />
             <ais-infinite-hits :cache="cache">
               <template slot="item" slot-scope="{ item }">
+                <img :src="item.image" />
                 <h1>
                   <a href="/product.html">
                     <ais-highlight :hit="item" attribute="name" />
@@ -50,8 +59,8 @@ export default {
   data() {
     return {
       searchClient: algoliasearch(
-        'B1G2GM9NG0',
-        'aadef574be1f9252bb48d4ea09b5cfe5'
+        'latency',
+        'af044fb0788d6bb15f807e4420592bc5'
       ),
       cache: createInfiniteHitsSessionStorageCache(),
       routing: {
