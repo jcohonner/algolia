@@ -25,6 +25,8 @@ program
     .action((script, options) => {
         const commandClass = require(path.resolve(script));
         const command = new commandClass(algoliasearch(options.appid, options.apikey), options.options, options.index);
+        command.setAPIKey(options.apikey);
+        command.setAPPID(options.appid);
         command.run();
     });
 
