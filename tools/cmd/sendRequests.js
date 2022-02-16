@@ -23,7 +23,7 @@ module.exports = class sendRequests extends AlgocliScript {
         //console.log('running sendRequests', 'options =', this.options, 'index =', this.index);
         try {
             for (var i=0; i<this.options.nbRequests; i++) {
-                var result = await this.index.search('',{hitsPerPage:1, attributesToRetrieve:['*','-taxIncluded.AL'], attributesToHighlight:[]});
+                var result = await this.index.search('',{hitsPerPage:1, attributesToRetrieve:['*','-taxIncluded','taxIncluded.AL'], attributesToHighlight:[]});
                 console.log(result.hits[0]);
             }
         } catch (e) {
