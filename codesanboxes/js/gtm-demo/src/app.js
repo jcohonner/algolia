@@ -1,7 +1,6 @@
 /* global instantsearch algoliasearch */
 
-const isCategoryPage = window.location.href.indexOf("category.html") > -1;
-
+const isCategoryPage = window.location.href.indexOf('category.html') > -1;
 
 const search = instantsearch({
   indexName: 'demo_products',
@@ -103,7 +102,5 @@ search.addWidgets([
     filters,
   }),
 ]);
-
-
 
 search.start();
