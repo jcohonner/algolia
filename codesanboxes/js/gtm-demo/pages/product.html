@@ -78,7 +78,7 @@
               <button class="buy"  data-insights-convert-after-search="PDP: buy">Buy</button>
               <button class="addToFav"  data-insights-convert="PDP: Add To Favorites">Add to Favorites</button>
             </div>`;
-          window.dataLayer.push({ event: 'Hits Viewed: PDP' });
+          window.dataLayer.push({ event: 'Hits Viewed: PDP', 'algolia-insights-hit-viewed-object-ids': [hit.objectID] });
         });
 
       } else {
