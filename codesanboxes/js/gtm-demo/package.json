@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "parcel index.html product.html --port 3000",
+    "start": "parcel index.html pages/*.html --port 3000",
     "build": "parcel build index.html",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix"

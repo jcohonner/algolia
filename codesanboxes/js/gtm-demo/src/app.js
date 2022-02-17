@@ -1,5 +1,8 @@
 /* global instantsearch algoliasearch */
 
+const isCategoryPage = window.location.href.indexOf("category.html") > -1;
+
+
 const search = instantsearch({
   indexName: 'demo_products',
   searchClient: algoliasearch('3EA6KSSDGW', '23fef1254e41ec407b1fc80f852e4a40'),
@@ -9,20 +12,14 @@ const insightsMiddleware = instantsearch.middlewares.createInsightsMiddleware({
   insightsClient: null,
   onEvent(event) {
     const { widgetType, eventType, payload } = event;
-    
+
     if (widgetType === 'ais.hits' && eventType === 'view') {
-      
-
-
-        var IDs = Array.from(document.querySelectorAll('[data-insights-object-id]')).filter(Boolean).map(function (element) {
-          return element.getAttribute('data-insights-object-id');
-        });
-
-        console.log(payload,IDs);
-
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
-        event: 'Hits Viewed',
+        event: isCategoryPage
+          ? 'Hits Viewed: Category Page'
+          : 'Hits Viewed: Search Page',
+        'algolia-insights-hit-viewed-object-ids': payload.objectIDs,
       });
     }
   },
@@ -30,10 +27,29 @@ const insightsMiddleware = instantsearch.middlewares.createInsightsMiddleware({
 
 search.use(insightsMiddleware);
 
+let filters = '';
+if (isCategoryPage) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('category')) {
+    filters = `categories:'${urlParams.get('category')}'`;
+
+    // Add the viewed filters to the main div for GTM
+    document
+      .querySelector('.ais-InstantSearch')
+      .setAttribute(
+        'data-insights-category-filter',
+        `categories:${urlParams.get('category')}`
+      );
+  }
+} else {
+  search.addWidgets([
+    instantsearch.widgets.searchBox({
+      container: '#searchbox',
+    }),
+  ]);
+}
+
 search.addWidgets([
-  instantsearch.widgets.searchBox({
-    container: '#searchbox',
-  }),
   instantsearch.widgets.clearRefinements({
     container: '#clear-refinements',
   }),
@@ -84,6 +100,7 @@ search.addWidgets([
 
   instantsearch.widgets.configure({
     clickAnalytics: true,
+    filters,
   }),
 ]);
 
