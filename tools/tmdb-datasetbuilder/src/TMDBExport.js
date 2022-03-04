@@ -3,25 +3,26 @@ const fs = require('fs');
 
 const TMDB_API_PAGE_LIMIT = 500;
 const EXPORT_FILENAME_PREFIX = 'movies';
-const prices = require.main.require('./data/prices.json');
-const featuredMovies = require.main.require('./data/featured-movies.json');
+
+
 const {getImageURL,dateToTimestamp,getRandomInt} = require('./utils')
 
 module.exports = class TMDBExport {
-    constructor({apiKey, languages, price, featured, maxPages, outputFolder, movieList}) {
+    constructor({apiKey, languages, price, featured, maxPages, outputFolder, movieList, exclusionList}) {
         this.tmdb = require('themoviedb-api-client')(apiKey);
         this.languages = languages;
-        this.price = price;
-        this.featured = featured;
         this.maxPages = Math.min(maxPages,TMDB_API_PAGE_LIMIT);
         this.outputFolder = outputFolder;
-        this.movieListFile = movieList;
+        this.featuredMovies = featured?require.main.require(featured):[];
+        this.prices = price?require.main.require(price):false;
+        this.exclusionList = exclusionList?require.main.require(exclusionList):[];
+        this.movieList = movieList?require.main.require(movieList):false;
     }
 
     async run() {
         let movies=[];
 
-        if (this.movieListFile) {
+        if (this.movieList.length > 0) {
             movies = await this.getMoviesFromFile();
         } else {
             movies = await this.getMoviesFromDiscover();
@@ -38,29 +39,29 @@ module.exports = class TMDBExport {
         this.languageSpecificExport(movies);
     }
 
-    async getMoviesFromFile() {
-        const movieIDs = require.main.require(this.movieListFile);
+    async getMoviesFromFile() {        
         //await this.exportMovies(movieList);
         const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-        progressBar.start(movieIDs.length, 0);
+        progressBar.start(this.movieList.length, 0);
 
         //We group per 20 movies to avoid to send too many requests to the API
         let chunks = [],
             chunkSize = 20;
-        for (let i = 0,j = movieIDs.length; i < j; i += chunkSize) {
-            chunks.push(movieIDs.slice(i, i + chunkSize));
+        for (let i = 0,j = this.movieList.length; i < j; i += chunkSize) {
+            chunks.push(this.movieList.slice(i, i + chunkSize));
         }
 
         //Get Movie details
         let movies = []
         for (let i = 0,j = chunks.length; i < j; i += 1) {
             movies.push(... await Promise.all(chunks[i].map(movieID => this.getMovie(movieID))));
-            progressBar.update(chunks[i].length);
+            progressBar.increment(chunks[i].length);
         };
 
         progressBar.stop();
 
-        return movies;
+        //return non null movies (filtered by exclusion list or errors)
+        return movies.filter(movie => movie);
     }
  
     async getMoviesFromDiscover() {
@@ -90,64 +91,70 @@ module.exports = class TMDBExport {
     
         progressBar.stop();
     
-        return movies;
+        //return non null movies (filtered by exclusion list or errors)
+        return movies.filter(movie => movie);
     }
 
 
     async getMovie(movieID) {
+        //check exclusion list
+        if (this.exclusionList.includes(movieID)) return null;
+
         //Initial language
-        const {body : movieDetails} = await this.tmdb.movieInfo({id: movieID, language: this.languages[0], append_to_response: 'credits'});
+        try {
+            const {body : movieDetails} = await this.tmdb.movieInfo({id: movieID, language: this.languages[0], append_to_response: 'credits'});
+            
+            let movieData = {
+                objectID: movieDetails.id,
+                original_title: movieDetails.original_title,
+                original_language: movieDetails.original_language,
+                release_date: dateToTimestamp(movieDetails.release_date),
+                vote_average: Math.floor(movieDetails.vote_average),
+                vote_count: movieDetails.vote_count,
+                popularity: movieDetails.popularity,
+                year: parseInt(movieDetails.release_date?.substring(0, 4)),
+                actors: movieDetails.credits?.cast?.map(a => a.name),
+                backdrop: getImageURL(movieDetails.backdrop_path),
+                title: {
+                    [this.languages[0]]: movieDetails.title,
+                },
+                overview: {
+                    [this.languages[0]]: movieDetails.overview,
+                },
+                genres: {
+                    [this.languages[0]]: movieDetails.genres?.map(g => g.name),
+                },
+                poster: {
+                    [this.languages[0]]: getImageURL(movieDetails.poster_path),
+                },
+                budget: movieDetails.budget,
+                revenue: movieDetails.revenue
+            }
         
-        let movieData = {
-            objectID: movieDetails.id,
-            original_title: movieDetails.original_title,
-            original_language: movieDetails.original_language,
-            release_date: dateToTimestamp(movieDetails.release_date),
-            vote_average: Math.floor(movieDetails.vote_average),
-            vote_count: movieDetails.vote_count,
-            popularity: movieDetails.popularity,
-            year: parseInt(movieDetails.release_date?.substring(0, 4)),
-            actors: movieDetails.credits?.cast?.map(a => a.name),
-            backdrop: getImageURL(movieDetails.backdrop_path),
-            title: {
-                [this.languages[0]]: movieDetails.title,
-            },
-            overview: {
-                [this.languages[0]]: movieDetails.overview,
-            },
-            genres: {
-                [this.languages[0]]: movieDetails.genres?.map(g => g.name),
-            },
-            poster: {
-                [this.languages[0]]: getImageURL(movieDetails.poster_path),
-            },
-            budget: movieDetails.budget,
-            revenue: movieDetails.revenue
-        }
-    
-        if (this.price) {
-            //10% of the time, we add an on sale price
-            const priceMod = (Math.random() <= 0.1)?'sales':'standard';
-            const priceData = prices[priceMod][getRandomInt(prices[priceMod].length)];
-            movieData.price = priceData.price;
-            movieData.original_price = priceData.original_price;
-            movieData.on_sale  = priceData.on_sale;
-        }
-    
-        if (this.featured) {
-            movieData.featured = featuredMovies.includes(movieData.id);
-        }
+            if (this.price) {
+                //10% of the time, we add an on sale price
+                const priceMod = (Math.random() <= 0.1)?'sales':'standard';
+                const priceData = this.price[priceMod][getRandomInt(this.price[priceMod].length)];
+                movieData.price = priceData.price;
+                movieData.original_price = priceData.original_price;
+                movieData.on_sale  = priceData.on_sale;
+            }
         
-    
-        await Promise.all(this.languages.slice(1).map(async (language) => {
-            const {body : movieDetailLang} = await this.tmdb.movieInfo({id: movieID, language: language});
-            movieData.title[language] = movieDetailLang.title;
-            movieData.overview[language] = movieDetailLang.overview;
-            movieData.genres[language] = movieDetailLang.genres?.map(g => g.name);
-            movieData.poster[language] = getImageURL(movieDetailLang.poster_path); 
-        }));
-    
-        return movieData;
+            movieData.featured = this.featuredMovies.includes(movieDetails.id);
+            
+        
+            await Promise.all(this.languages.slice(1).map(async (language) => {            
+                const {body : movieDetailLang} = await this.tmdb.movieInfo({id: movieID, language: language});
+                movieData.title[language] = movieDetailLang.title;
+                movieData.overview[language] = movieDetailLang.overview;
+                movieData.genres[language] = movieDetailLang.genres?.map(g => g.name);
+                movieData.poster[language] = getImageURL(movieDetailLang.poster_path); 
+            }));
+        
+            return movieData;
+        } catch {
+            return null;
+        }
     }
 
     languageSpecificExport(movies) {
