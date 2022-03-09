@@ -114,6 +114,7 @@ module.exports = class TMDBExport {
                 popularity: movieDetails.popularity,
                 year: parseInt(movieDetails.release_date?.substring(0, 4)),
                 actors: movieDetails.credits?.cast?.map(a => a.name),
+                director: movieDetails.credits?.crew?.find(c => c.job === 'Director')?.name,
                 backdrop: getImageURL(movieDetails.backdrop_path),
                 title: {
                     [this.languages[0]]: movieDetails.title,
@@ -131,10 +132,10 @@ module.exports = class TMDBExport {
                 revenue: movieDetails.revenue
             }
         
-            if (this.price) {
+            if (this.prices) {
                 //10% of the time, we add an on sale price
                 const priceMod = (Math.random() <= 0.1)?'sales':'standard';
-                const priceData = this.price[priceMod][getRandomInt(this.price[priceMod].length)];
+                const priceData = this.prices[priceMod][getRandomInt(this.prices[priceMod].length)];
                 movieData.price = priceData.price;
                 movieData.original_price = priceData.original_price;
                 movieData.on_sale  = priceData.on_sale;
