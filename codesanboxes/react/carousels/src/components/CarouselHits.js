@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function CarouselHits({hits}) {
     return (
         <div className="flex flex-row">
