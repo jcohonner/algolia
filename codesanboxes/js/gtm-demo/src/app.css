@@ -20,12 +20,18 @@ body {
   width: 250px;
 }
 
+.content {
+  float: left;
+  width: calc(100% - 520px);
+}
+
 .right-panel {
-  margin-left: 260px;
+  float: right;
+  width:250px;
 }
 
 .ais-InstantSearch {
-  max-width: 960px;
+  
   overflow: hidden;
   margin: 0 auto;
 }
@@ -33,10 +39,12 @@ body {
 .ais-Hits-item {
   margin-bottom: 1em;
   width: calc(50% - 1rem);
+  max-width:200px;
 }
 
 .ais-Hits-item img {
   margin-right: 1em;
+  max-width:100%;
 }
 
 .hit-name {

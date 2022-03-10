@@ -77,12 +77,12 @@ search.addWidgets([
           data-insights-query-id="{{__queryID}}"
           >
 
-          <img src="{{image}}" align="left" alt="{{name}}"/>
+          <div class="hit-img"><img src="{{image}}" align="left" alt="{{name}}" /></div>
           <div class="hit-name">
             {{#helpers.highlight}}{ "attribute": "name" }{{/helpers.highlight}}
           </div>
           <div class="hit-description" >
-          #{{objectID}} - {{#helpers.highlight}}{ "attribute": "description" }{{/helpers.highlight}}
+          #{{objectID}}
           </div>
           <div class="hit-price">\${{price}}</div>
           <div><a href="product.html?objectID={{objectID}}&queryID={{__queryID}}"> See Product </a></div>
