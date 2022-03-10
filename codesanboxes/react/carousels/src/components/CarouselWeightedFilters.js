@@ -4,7 +4,7 @@ import CarouselHits from './CarouselHits';
 
 
 class CarouselWeightedFilters extends React.Component {
-    static contextType = AlgoliaContext;
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -29,5 +29,6 @@ class CarouselWeightedFilters extends React.Component {
         )
     }
 }
+CarouselWeightedFilters.contextType = AlgoliaContext;
 
 export default CarouselWeightedFilters;

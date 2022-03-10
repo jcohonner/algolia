@@ -4,7 +4,7 @@ import CarouselHits from './CarouselHits';
 
 
 class CarouselNewArrivals extends React.Component {
-    static contextType = AlgoliaContext;
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -29,5 +29,6 @@ class CarouselNewArrivals extends React.Component {
         )
     }
 }
+CarouselNewArrivals.contextType = AlgoliaContext;
 
 export default CarouselNewArrivals;

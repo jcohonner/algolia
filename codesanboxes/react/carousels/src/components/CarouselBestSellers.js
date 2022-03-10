@@ -4,7 +4,7 @@ import CarouselHits from './CarouselHits';
 
 
 class CarouselBestSellers extends React.Component {
-    static contextType = AlgoliaContext;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -63,5 +63,6 @@ class CarouselBestSellers extends React.Component {
         )
     }
 }
+CarouselBestSellers.contextType = AlgoliaContext;
 
 export default CarouselBestSellers;

@@ -3,7 +3,7 @@ import AlgoliaContext from '../AlgoliaContext';
 import CarouselHits from './CarouselHits';
 
 class CarouselMoreFrom extends React.Component {
-    static contextType = AlgoliaContext;
+
 
     constructor(props) {
         super(props);
@@ -67,5 +67,6 @@ class CarouselMoreFrom extends React.Component {
         )
     }
 }
+CarouselMoreFrom.contextType = AlgoliaContext;
 
 export default CarouselMoreFrom;
