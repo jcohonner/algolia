@@ -52,7 +52,7 @@ export default function App() {
         <p><strong>Algolia implementation</strong>: leveraging Algolia rules feature you can "pin" records to a specific context. That context will be passed to the query (usually empty). This also provide an easy way the create both curated & autocmatic results from a single query. 
         Rules may be created from Algolia Dashboard as well as using the API</p>
         <p><strong>Demo</strong>: 1 rule triggered by rule context "holiday_playlits" and an empty query
-        <img src="/img/rule.png"/></p>
+        <img src="/public/img/rule.png"/></p>
         <CarouselCurated />
       </div>
       <div className="bg-gray-50 rounded-lg p-5 m-5">
