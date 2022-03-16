@@ -7,7 +7,7 @@ const EXPORT_FILENAME_PREFIX = 'movies';
 
 const {getImageURL,dateToTimestamp,getRandomInt} = require('./utils')
 
-module.exports = class TMDBExport {
+module.exports = class TMDBMovieExport {
     constructor({apiKey, languages, price, featured, maxPages, outputFolder, movieList, exclusionList}) {
         this.tmdb = require('themoviedb-api-client')(apiKey);
         this.languages = languages;
