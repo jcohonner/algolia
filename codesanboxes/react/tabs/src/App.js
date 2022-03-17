@@ -1,3 +1,4 @@
+/* eslint-disable valid-jsdoc */
 import React from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import {
@@ -20,22 +21,59 @@ const searchClient = algoliasearch(
   '23fef1254e41ec407b1fc80f852e4a40'
 );
 
+const hitsPerPageConf = {
+  all: {
+    movies: 20,
+    products: 5,
+    actors: 2,
+    directors: 3,
+  },
+  movies: {
+    movies: 20,
+    products: 1,
+    actors: 1,
+    directors: 1,
+  },
+  products: {
+    movies: 1,
+    products: 10,
+    actors: 1,
+    directors: 1,
+  },
+  actors: {
+    movies: 1,
+    products: 1,
+    actors: 20,
+    directors: 1,
+  },
+  directors: {
+    movies: 1,
+    products: 1,
+    actors: 1,
+    directors: 20,
+  },
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentTab: 'all',
-      directorsHitPerPage: 3,
-      actorsHitPerPage: 2,
+      hitsPerPage: hitsPerPageConf.all,
     };
   }
 
+  /**
+   * handles the click on the tab
+   * note that we also change the hitsPerPage in the state to adjust and avoid
+   * the retrieval of a too large number of hits (which might be slow)
+   * @param {*} event
+   */
   handleTabClick = event => {
     const newTab = event.target.closest('[data-tab]').dataset.tab;
     this.setState({
       currentTab: newTab,
-      directorsHitPerPage: newTab === 'directors' ? 20 : 3,
-      actorsHitPerPage: newTab === 'actors' ? 20 : 2,
+      hitsPerPage: hitsPerPageConf[newTab],
     });
   };
 
@@ -44,7 +82,7 @@ class App extends React.Component {
       <div>
         <header className="header">
           <h1 className="header-title">
-            <a href="/">react-instantsearch-app</a>
+            <a href="/">Results from multiple indices in Tabs</a>
           </h1>
           <p className="header-subtitle">
             using{' '}
@@ -99,6 +137,7 @@ class App extends React.Component {
               className="search-panel"
             >
               <Index indexName="movies">
+                <Configure hitsPerPage={this.state.hitsPerPage.movies} />
                 <div className="search-panel__filters">
                   <RefinementList attribute="genres" />
                 </div>
@@ -121,6 +160,7 @@ class App extends React.Component {
               className="search-panel"
             >
               <Index indexName="demo_products" indexId="products">
+                <Configure hitsPerPage={this.state.hitsPerPage.products} />
                 <div className="search-panel__filters">
                   <RefinementList attribute="brand" />
                 </div>
@@ -143,7 +183,7 @@ class App extends React.Component {
               className="search-panel"
             >
               <Index indexName="actors">
-                <Configure hitsPerPage={this.state.actorsHitPerPage} />
+                <Configure hitsPerPage={this.state.hitsPerPage.actors} />
                 <div className="search-panel__results">
                   <Hits hitComponent={Person} />
 
@@ -161,7 +201,7 @@ class App extends React.Component {
               className="search-panel"
             >
               <Index indexName="directors">
-                <Configure hitsPerPage={this.state.directorsHitPerPage} />
+                <Configure hitsPerPage={this.state.hitsPerPage.directors} />
                 <div className="search-panel__results">
                   <Hits hitComponent={Person} />
 
