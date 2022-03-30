@@ -22,14 +22,13 @@ module.exports = class findObjectID extends AlgocliScript {
     async run() {
         //Looking for product_1200272
         //product_374491
-        const searchForObjectID = 'product_1200272';
+        const searchForObjectID = 'MUPRD0002038';
 
-        const query= 'coasters';
+        const query= 'bakery';
         let parameters = {
             hitsPerPage: 500,
             page:0,
             filters: '',
-            tagFilters: ['product','United States'],
             distinct:false,
             attributesToRetrieve:['objectID']
         };
