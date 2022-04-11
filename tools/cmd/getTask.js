@@ -4,12 +4,13 @@ module.exports = class getTask extends AlgocliScript {
     /**
      * constructor
      */
-    constructor(algoliaClient, optionString, index) {
+     constructor(appid, apikey, index, optionString) {
         // add here your default options values
         // it will be used when you use the command without options
         let defaultOptionValues = {};
-        super(algoliaClient,index,defaultOptionValues,optionString);
+        super(appid, apikey, index, optionString, defaultOptionValues);
     }
+
 
 
     /**
@@ -20,7 +21,7 @@ module.exports = class getTask extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        const path = `/1/indexes/${this.index.indexName}/task/${this.options.taskID}`;
+        const path = `/1/indexes/${this.options.indexName}/task/${this.options.taskID}`;
         try{
             let task = await this.client.customRequest({method:'GET', path});
             console.log({path,task});

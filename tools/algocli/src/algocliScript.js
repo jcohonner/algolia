@@ -1,23 +1,18 @@
+const algoliasearch = require('algoliasearch');
+
 module.exports = class AlgocliScript {
     /**
      * constructor
      */
-    constructor(algoliaClient, index, defaultOptionValues, optionString) {
-        this.client = algoliaClient;
+    constructor(appid, apikey, index, optionString, defaultOptionValues) {
+        this.client = algoliasearch(appid,apikey);
         this.index = index ? this.client.initIndex(index):null;
         this.defaultOptionValues = defaultOptionValues;
         this.options = this.parseOptions(optionString);
-    }
-
-
-    setAPIKey(apikey) {
+        this.options.indexName = index;
+        this.options.appid = appid;
         this.options.apikey = apikey;
     }
-
-    setAPPID(appid) {
-        this.options.appid = appid;
-    }
-
 
     /**
      * add here your default options values

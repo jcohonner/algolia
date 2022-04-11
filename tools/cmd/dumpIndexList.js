@@ -4,12 +4,14 @@ module.exports = class dumpIndexList extends AlgocliScript {
     /**
      * constructor
      */
-    constructor(algoliaClient, optionString, index) {
+     constructor(appid, apikey, index, optionString) {
         // add here your default options values
         // it will be used when you use the command without options
         let defaultOptionValues = {};
-        super(algoliaClient,index,defaultOptionValues,optionString);
+        super(appid, apikey, index, optionString, defaultOptionValues);
     }
+
+
 
 
     /**

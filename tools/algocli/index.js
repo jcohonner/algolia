@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const { program, Option  } = require('commander');
-const algoliasearch = require('algoliasearch');
 const path = require("path");
 
 program.version('0.0.1');
@@ -24,9 +23,7 @@ program
     .option("-o, --options <options>", "comma separated list of key:value options to pass to the script")
     .action((script, options) => {
         const commandClass = require(path.resolve(script));
-        const command = new commandClass(algoliasearch(options.appid, options.apikey), options.options, options.index);
-        command.setAPIKey(options.apikey);
-        command.setAPPID(options.appid);
+        const command = new commandClass(options.appid, options.apikey, options.index, options.options);
         command.run();
     });
 
