@@ -7,11 +7,8 @@ module.exports = class AlgocliScript {
     constructor(appid, apikey, index, optionString, defaultOptionValues) {
         this.client = algoliasearch(appid,apikey);
         this.index = index ? this.client.initIndex(index):null;
-        this.defaultOptionValues = defaultOptionValues;
+        this.defaultOptionValues = {indexName:index, appid, apikey, ...defaultOptionValues};
         this.options = this.parseOptions(optionString);
-        this.options.indexName = index;
-        this.options.appid = appid;
-        this.options.apikey = apikey;
     }
 
     /**
