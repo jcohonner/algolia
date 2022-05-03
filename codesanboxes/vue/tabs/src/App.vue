@@ -13,136 +13,104 @@
     </header>
 
     <div class="container">
-      <ais-instant-search
-        :search-client="searchClient"
-        index-name="movies"
-      >
-        <ais-configure
-          :hits-per-page.camel="1"
-        />
+      <ais-instant-search :search-client="searchClient" index-name="movies">
+        <ais-configure :hits-per-page.camel="1" />
 
         <ais-search-box
-          :placeholder="'Search for movies, actors or directors'"/>
+          :placeholder="'Search for movies, actors or directors'"
+        />
 
+        <search-tabs default-index="movies-full">
+          <!-- Tab 1 -->
+          <search-tab :title="'Movies'" :index-id="'movies-full'">
+            <ais-index
+              index-name="movies"
+              index-id="movies-full"
+              ref="indexMovies"
+            >
+              <ais-configure :hits-per-page.camel="8" />
+              <div class="search-panel">
+                <div class="search-panel__filters">
+                  <ais-dynamic-widgets>
+                    <ais-refinement-list attribute="actors" />
+                    <ais-refinement-list attribute="genres" />
+                    <ais-refinement-list attribute="on_sale" />
+                    <ais-refinement-list attribute="director" />
+                  </ais-dynamic-widgets>
+                </div>
 
-        <search-tabs>
-        <!-- Tab 1 -->
-        <search-tab
-          :title="'Movies'"
-          :index-id="'movies-full'">
-          <ais-index index-name="movies" index-id="movies-full" ref="indexMovies" >
-          <ais-configure
-            :hits-per-page.camel="8"
-          />
-          <div class="search-panel">
-            <div class="search-panel__filters">
-              <ais-dynamic-widgets>
-                <ais-refinement-list attribute="actors" />
-                <ais-refinement-list attribute="genres" />
-                <ais-refinement-list attribute="on_sale" />
-                <ais-refinement-list attribute="director" />
-              </ais-dynamic-widgets>
-            </div>
+                <div class="search-panel__results">
+                  <ais-hits>
+                    <template v-slot:item="{ item }">
+                      <article>
+                        <img :src="item.poster" style="max-width: 100%" />
+                        <h1>
+                          <ais-highlight :hit="item" attribute="title" />
+                        </h1>
+                      </article>
+                    </template>
+                  </ais-hits>
 
-            <div class="search-panel__results">
-
-              <ais-hits>
-                <template v-slot:item="{ item }">
-                  <article>
-                    <img :src="item.poster" style="max-width:100%" />
-                    <h1>
-                      <ais-highlight
-                        :hit="item"
-                        attribute="title"
-                      />
-                    </h1>
-                  </article>
-                </template>
-              </ais-hits>
-
-              <div class="pagination">
-                <ais-pagination />
+                  <div class="pagination">
+                    <ais-pagination />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          </ais-index>
-        </search-tab>
-        <!-- Tab 2 -->
-        <search-tab
-          :title="'Actors'"
-          :index-id="'actors'">
-          <ais-index index-name="actors">
-          <ais-configure
-            :hits-per-page.camel="8"
-          />
-          <div class="search-panel">
-            <div class="search-panel__filters">
+            </ais-index>
+          </search-tab>
+          <!-- Tab 2 -->
+          <search-tab :title="'Actors'" :index-id="'actors'">
+            <ais-index index-name="actors">
+              <ais-configure :hits-per-page.camel="8" />
+              <div class="search-panel">
+                <div class="search-panel__filters"></div>
 
-            </div>
+                <div class="search-panel__results">
+                  <ais-hits>
+                    <template v-slot:item="{ item }">
+                      <article>
+                        <img :src="item.picture" style="max-width: 100%" />
+                        <h1>
+                          <ais-highlight :hit="item" attribute="name" />
+                        </h1>
+                      </article>
+                    </template>
+                  </ais-hits>
 
-            <div class="search-panel__results">
-
-              <ais-hits>
-                <template v-slot:item="{ item }">
-                  <article>
-                    <img :src="item.picture" style="max-width:100%" />
-                    <h1>
-                      <ais-highlight
-                        :hit="item"
-                        attribute="name"
-                      />
-                    </h1>
-
-                  </article>
-                </template>
-              </ais-hits>
-
-              <div class="pagination">
-                <ais-pagination />
+                  <div class="pagination">
+                    <ais-pagination />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          </ais-index>
-        </search-tab>
-        <!-- Tab 3 -->
-        <search-tab
-          :title="'Directors'"
-          :index-id="'directors'">
-          <ais-index index-name="directors">
-          <ais-configure
-            :hits-per-page.camel="8"
-          />
-          <div class="search-panel">
-            <div class="search-panel__filters">
+            </ais-index>
+          </search-tab>
+          <!-- Tab 3 -->
+          <search-tab :title="'Directors'" :index-id="'directors'">
+            <ais-index index-name="directors">
+              <ais-configure :hits-per-page.camel="8" />
+              <div class="search-panel">
+                <div class="search-panel__filters"></div>
 
-            </div>
+                <div class="search-panel__results">
+                  <ais-hits>
+                    <template v-slot:item="{ item }">
+                      <article>
+                        <img :src="item.picture" style="max-width: 100%" />
+                        <h1>
+                          <ais-highlight :hit="item" attribute="name" />
+                        </h1>
+                      </article>
+                    </template>
+                  </ais-hits>
 
-            <div class="search-panel__results">
-
-              <ais-hits>
-                <template v-slot:item="{ item }">
-                  <article>
-                    <img :src="item.picture" style="max-width:100%" />
-                    <h1>
-                      <ais-highlight
-                        :hit="item"
-                        attribute="name"
-                      />
-                    </h1>
-
-                  </article>
-                </template>
-              </ais-hits>
-
-              <div class="pagination">
-                <ais-pagination />
+                  <div class="pagination">
+                    <ais-pagination />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          </ais-index>
-        </search-tab>
+            </ais-index>
+          </search-tab>
         </search-tabs>
-
       </ais-instant-search>
     </div>
   </div>
@@ -157,7 +125,10 @@ export default {
   components: { SearchTabs, SearchTab },
   data() {
     return {
-      searchClient: algoliasearch('3EA6KSSDGW', '23fef1254e41ec407b1fc80f852e4a40')
+      searchClient: algoliasearch(
+        '3EA6KSSDGW',
+        '23fef1254e41ec407b1fc80f852e4a40'
+      ),
     };
   },
 };
