@@ -58,6 +58,44 @@
               </div>
             </ais-index>
           </search-tab>
+          <!-- Tab 1 bis -->
+          <search-tab :title="'Science Fiction only'" :index-id="'movies-sf'">
+            <ais-index
+              index-name="movies"
+              index-id="movies-sf"
+              ref="indexMovies"
+            >
+              <ais-configure :hits-per-page.camel="8" filters="genres:'Science Fiction'"/>
+
+              <div class="search-panel">
+                <div class="search-panel__filters">
+                  <ais-dynamic-widgets>
+                    <ais-refinement-list attribute="actors" />
+                    <ais-refinement-list attribute="genres" />
+                    <ais-refinement-list attribute="on_sale" />
+                    <ais-refinement-list attribute="director" />
+                  </ais-dynamic-widgets>
+                </div>
+
+                <div class="search-panel__results">
+                  <ais-hits>
+                    <template v-slot:item="{ item }">
+                      <article>
+                        <img :src="item.poster" style="max-width: 100%" />
+                        <h1>
+                          <ais-highlight :hit="item" attribute="title" />
+                        </h1>
+                      </article>
+                    </template>
+                  </ais-hits>
+
+                  <div class="pagination">
+                    <ais-pagination />
+                  </div>
+                </div>
+              </div>
+            </ais-index>
+          </search-tab>
           <!-- Tab 2 -->
           <search-tab :title="'Actors'" :index-id="'actors'">
             <ais-index index-name="actors">
