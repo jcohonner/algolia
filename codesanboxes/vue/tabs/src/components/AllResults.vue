@@ -1,7 +1,7 @@
 <template>
     <div v-if="state">
         <div v-show="state.hasResult"><slot></slot></div>
-        <div v-show="!state.hasResult">
+        <div v-show="!state.hasResult && state.query">
 
             <p>No results found for {{state.query}}. You may also like</p>
 
