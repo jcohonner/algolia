@@ -13,12 +13,33 @@
     </header>
 
     <div class="container">
-      <ais-instant-search :search-client="searchClient" index-name="movies">
+      <ais-instant-search :search-client="searchClient" index-name="movies" ref="aisIS">
         <ais-configure :hits-per-page.camel="1" />
 
         <ais-search-box
           :placeholder="'Search for movies, actors or directors'"
         />
+
+
+        <div class="qs">
+
+          <p>Popular Searches</p>
+            <ais-index
+              index-name="movies_query_suggestions"
+              index-id="movies-qs"
+            >
+              
+              <ais-configure :hits-per-page.camel="4" />
+                  <ais-hits :transform-items="removeExactQueryQuerySuggestion">
+                    <template v-slot:item="{ item }">
+                      <ais-highlight :hit="item" attribute="query"  @click="search(item.query)" />
+                    </template>
+                  </ais-hits>
+            </ais-index>
+        </div>
+
+
+        <all-results>
 
         <search-tabs default-index="movies-full">
           <!-- Tab 1 -->
@@ -149,6 +170,7 @@
             </ais-index>
           </search-tab>
         </search-tabs>
+        </all-results>
       </ais-instant-search>
     </div>
   </div>
@@ -158,9 +180,10 @@
 import algoliasearch from 'algoliasearch/lite';
 import SearchTabs from './components/SearchTabs.vue';
 import SearchTab from './components/SearchTab.vue';
+import AllResults from './components/AllResults.vue';
 
 export default {
-  components: { SearchTabs, SearchTab },
+  components: { SearchTabs, SearchTab, AllResults },
   data() {
     return {
       searchClient: algoliasearch(
@@ -169,6 +192,15 @@ export default {
       ),
     };
   },
+  methods: {
+    search(query) {
+      this.$refs.aisIS.instantSearchInstance.helper.setQuery(query).search();
+    },
+    removeExactQueryQuerySuggestion(items) {
+      const currentQuery = this.$refs.aisIS.instantSearchInstance.helper.state.query.toLowerCase();
+      return items.filter(item => item.query.toLowerCase() !== currentQuery);
+    }
+  }
 };
 </script>
 
@@ -248,4 +280,18 @@ em {
   margin: 2rem auto;
   text-align: center;
 }
+
+.qs {
+  margin:10px 0 10px 0;
+}
+
+.qs ol {
+    display: flex;
+}
+
+.qs ol li.ais-Hits-item {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
 </style>
