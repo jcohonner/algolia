@@ -215,36 +215,37 @@ import SearchTabs from './components/SearchTabs.vue';
 import SearchTab from './components/SearchTab.vue';
 import AllResults from './components/AllResults.vue';
 
+const algoliaClient = algoliasearch(
+    '3EA6KSSDGW',
+    '23fef1254e41ec407b1fc80f852e4a40'
+  );
+
+
+const searchClient = {
+  ...algoliaClient,
+  search(requests) {
+    //set to false to disable emty query
+    const allowEmptyQuery = true;
+    if (!allowEmptyQuery && requests.every(({ params }) => !params.query)) {
+      return Promise.resolve({
+        results: requests.map(() => ({
+          hits: [],
+          nbHits: 0,
+          nbPages: 0,
+          page: 0,
+          processingTimeMS: 0,
+        })),
+      });
+    }
+
+    return algoliaClient.search(requests);
+  },
+};
 
 export default {
   components: { SearchTabs, SearchTab, AllResults },
   data() {
-    const algoliaClient = algoliasearch(
-        '3EA6KSSDGW',
-        '23fef1254e41ec407b1fc80f852e4a40'
-      );
 
-  
-    const searchClient = {
-      ...algoliaClient,
-      search(requests) {
-        //set to false to disable emty query
-        const allowEmptyQuery = true;
-        if (!allowEmptyQuery && requests.every(({ params }) => !params.query)) {
-          return Promise.resolve({
-            results: requests.map(() => ({
-              hits: [],
-              nbHits: 0,
-              nbPages: 0,
-              page: 0,
-              processingTimeMS: 0,
-            })),
-          });
-        }
-
-        return algoliaClient.search(requests);
-      },
-    };
 
     return {
       searchClient,
