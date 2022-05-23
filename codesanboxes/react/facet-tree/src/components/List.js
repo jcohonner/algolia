@@ -1,3 +1,6 @@
+/*
+see : https://github.com/algolia/react-instantsearch/tree/master/packages/react-instantsearch-dom/src/components/List.js
+*/
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';

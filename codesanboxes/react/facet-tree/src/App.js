@@ -14,14 +14,22 @@ import './App.css';
 
 
 import RefinementTree from './components/RefinementTree';
+
+//profession & secteur should be replaced by a Database extraction
 import profession from './data/profession.json';
 import secteur from './data/secteur.json';
 
 const searchClient = algoliasearch('testingURRC5O46YV', 'ZDI2NTk0NTFlNWM2ODIyYjhlNDBhNzUyNzgwNDRhOGI1NGFhYjcxOTBkYzFhYTJmMzM5NTQ4YzdhODYwZGY1M3ZhbGlkVW50aWw9MTY1MzU2NjQzMDU5Mg==');
 
 
+/**
+ * will be applied on the items of the RefinementTree so we create
+ * a new array of items with the new structure including parents
+ * @todo searchable
+ * @param {*} items 
+ * @returns 
+ */
 const transformProfessionNames = (items) => {
-  console.log('transformProfsNames', items);
   const itemHash = {};
   items.forEach(item => {
     itemHash[item.label] = item;
@@ -51,6 +59,13 @@ const transformProfessionNames = (items) => {
   });
 }
 
+/**
+ * will be applied on the items of the RefinementTree so we create
+ * a new array of items with the new structure including parents
+ * @todo searchable
+ * @param {*} items 
+ * @returns 
+ */
 const transformSectorsNames = (items) => {
   
   const itemHash = {};

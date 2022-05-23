@@ -1,3 +1,6 @@
+/*
+see : https://github.com/algolia/react-instantsearch/tree/master/packages/react-instantsearch-dom/src/components/RefinementList.js
+*/
 import React, { Component } from 'react';
 import { connectRefinementList, Highlight } from 'react-instantsearch-dom';
 import { createClassNames } from 'react-instantsearch-dom/dist/es/core/utils';
@@ -70,7 +73,6 @@ class RefinementTreeComponent extends Component {
 
 
   render() {
-    console.log(this.props);
     const {
       translate,
       items,
