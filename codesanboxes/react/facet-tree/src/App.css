@@ -58,3 +58,7 @@ em {
   margin: 2rem auto;
   text-align: center;
 }
+
+.ais-RefinementList-item--parent {
+  font-weight: bold;
+}
