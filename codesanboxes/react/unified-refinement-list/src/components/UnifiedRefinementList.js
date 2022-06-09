@@ -85,8 +85,7 @@ const UnifiedRefinementList = connectRefinementList(
                 <input
                   className="ais-RefinementList-checkbox"
                   type="checkbox"
-                  onClick={event => {
-                    event.preventDefault();
+                  onChange={event => {
                     refine(item.value);
                   }}
                   checked={item.isRefined}
