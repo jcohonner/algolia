@@ -20,8 +20,14 @@
       >
         <ais-configure :hits-per-page.camel="1" />
 
-        <ais-search-box
+        <!--ais-search-box
           :placeholder="'Search for movies, actors or directors'"
+          v-show="asYouType"
+        /-->
+
+        <SearchBox
+          :placeholder="'Search for movies, actors or directors'"
+          ref="customSearchBox"
           v-show="asYouType"
         />
 
@@ -214,6 +220,7 @@ import algoliasearch from 'algoliasearch/lite';
 import SearchTabs from './components/SearchTabs.vue';
 import SearchTab from './components/SearchTab.vue';
 import AllResults from './components/AllResults.vue';
+import SearchBox from './components/SearchBox.vue';
 
 const algoliaClient = algoliasearch(
     '3EA6KSSDGW',
@@ -243,7 +250,7 @@ const searchClient = {
 };
 
 export default {
-  components: { SearchTabs, SearchTab, AllResults },
+  components: { SearchTabs, SearchTab, AllResults, SearchBox },
   data() {
 
 
@@ -259,7 +266,8 @@ export default {
     },
     search(query) {
       this.$refs.searchBox.value = query;
-      this.$refs.aisIS.instantSearchInstance.helper.setQuery(query).search();
+      this.$refs.customSearchBox.currentRefinement=query;
+      //this.$refs.aisIS.instantSearchInstance.helper.setQuery(query).search();
     },
     removeExactQueryQuerySuggestion(items) {
       const currentQuery =
