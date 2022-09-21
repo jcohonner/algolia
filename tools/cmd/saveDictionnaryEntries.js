@@ -1,6 +1,6 @@
 const AlgocliScript = require.main.require('./src/algocliScript');
 
-module.exports = class findInLogs extends AlgocliScript {
+module.exports = class saveDictionnaryEntries extends AlgocliScript {
     /**
      * constructor
      */
@@ -12,7 +12,6 @@ module.exports = class findInLogs extends AlgocliScript {
     }
 
 
-
     /**
      * run function (mandatory)
      * available variables:
@@ -21,14 +20,20 @@ module.exports = class findInLogs extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        this.client.getLogs({ length: 100 }).then(result => {
+        const objectID = 'tshirt';
+        const language = 'en';
+        const words = ['tshirt', 'tshirts', 't shirt', 't shirts', 't-shirt', 't-shirts']
 
-            const matched = result.logs.filter(log => {
-                return log.query_params ? log.query_params.indexOf('q') !== -1 : false;
-            })
-
-            console.log(JSON.stringify(matched, null, 2));
-
-        });
+        this.client.saveDictionaryEntries('plurals',
+            [{
+                objectID,
+                language,
+                words
+            }]
+        ).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        })
     }
 }

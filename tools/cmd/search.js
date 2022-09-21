@@ -1,6 +1,6 @@
 const AlgocliScript = require.main.require('./src/algocliScript');
 
-module.exports = class findInLogs extends AlgocliScript {
+module.exports = class search extends AlgocliScript {
     /**
      * constructor
      */
@@ -12,7 +12,6 @@ module.exports = class findInLogs extends AlgocliScript {
     }
 
 
-
     /**
      * run function (mandatory)
      * available variables:
@@ -21,14 +20,15 @@ module.exports = class findInLogs extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        this.client.getLogs({ length: 100 }).then(result => {
 
-            const matched = result.logs.filter(log => {
-                return log.query_params ? log.query_params.indexOf('q') !== -1 : false;
-            })
+        const queries = [
 
-            console.log(JSON.stringify(matched, null, 2));
+        ]
 
-        });
+        this.client.multipleQueries(
+            queries
+        ).then(function (result) {
+            console.log(JSON.stringify(result, null, 2));
+        }).catch(e => { console.log(e) });
     }
 }
