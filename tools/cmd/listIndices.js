@@ -1,6 +1,6 @@
 const AlgocliScript = require.main.require('./src/algocliScript');
 
-module.exports = class dumpAttributeValues extends AlgocliScript {
+module.exports = class listIndices extends AlgocliScript {
     /**
      * constructor
      */
@@ -20,14 +20,21 @@ module.exports = class dumpAttributeValues extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        this.index.browseObjects({
-            query:'bruce willis',
-            attributesToRetrieve:[this.options.attribute],
-            batch: hits => {
-                hits.forEach(hit => {
-                    console.log(hit[this.options.attribute]);
+        try {
+            this.client.listIndices().then(({ items }) => {
+               
+               console.log(["index", "entries", "dataSize", "fileSize", "createdAt", "updatedAt"].join(","));
+               items.forEach(element => {
+                    console.log([element.name, element.entries, element.dataSize, element.fileSize, element.createdAt, element.updatedAt].join(','));
                 });
-            }
-        });
+            });
+            
+        } catch (error) {
+         console.log(
+            error
+         )   
+        }
+
+        
     }
 }

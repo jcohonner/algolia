@@ -20,13 +20,8 @@ module.exports = class usage extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        const startDate = new Date('27 November 2022 00:00 UTC').toISOString();
-        const endDate = new Date().toISOString();
+        const url = `https://status.algolia.com/1/inventory/servers`;
 
-
-        //const url = `https://usage.algolia.com/1/usage/search_operations,total_search_operations,total_search_requests?startDate=${startDate}&endDate=${endDate}`;
-        const url = `https://usage.algolia.com/1/usage/file_size?startDate=${startDate}&endDate=${endDate}`;
-        //const url = 'https://usage.algolia.com/1/agg_usage/api_clients/since/30/days';
         fetch(url, {
             method: 'GET',
             headers: {
@@ -36,8 +31,6 @@ module.exports = class usage extends AlgocliScript {
         }).then(response => {
             return response.json();
         }).then(data => {
-            //const sizeGB = Math.round(data.file_size[0].v/1024/1024/1024);
-            
             console.log(data);
         }).catch(err => {
             console.log(err);
