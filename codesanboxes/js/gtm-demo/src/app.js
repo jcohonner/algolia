@@ -39,6 +39,9 @@ if (isCategoryPage) {
         'data-insights-category-filter',
         `categories:${urlParams.get('category')}`
       );
+    document.querySelector('#categoryName').innerHTML = urlParams.get(
+      'category'
+    );
   }
 } else {
   search.addWidgets([
