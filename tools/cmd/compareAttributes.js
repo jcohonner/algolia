@@ -1,6 +1,6 @@
 const AlgocliScript = require.main.require('./src/algocliScript');
 
-module.exports = class listIndices extends AlgocliScript {
+module.exports = class compareAttributes extends AlgocliScript {
     /**
      * constructor
      */
@@ -20,21 +20,28 @@ module.exports = class listIndices extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        try {
-            this.client.listIndices().then(({ items }) => {
-               
-               console.log(["index", "entries", "dataSize", "fileSize", "primary", "createdAt", "updatedAt"].join(","));
-               items.forEach(element => {
-                    console.log([element.name, element.entries, element.dataSize, element.fileSize, element.primary||"", element.createdAt, element.updatedAt].join(','));
-                });
-            });
-            
-        } catch (error) {
-         console.log(
-            error
-         )   
-        }
 
-        
+        let sameValue = 0;
+        let totalCount = 0;
+
+        try {
+            this.index.browseObjects({
+                query:'',
+                batch: hits => {
+                    console.log('.');
+                    hits.forEach(hit => {
+                        totalCount++;
+                        if (hit.image_url === hit.thumbnail_url) {
+                            sameValue++;
+                        }
+                    });
+                }
+            }).then(() => {
+                console.log(`Total count: ${totalCount}`);
+                console.log(`Same value: ${sameValue}`);
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

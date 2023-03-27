@@ -21,13 +21,16 @@ module.exports = class search extends AlgocliScript {
      */
     async run() {
 
-        const queries = [
+        /*const queries = [
 
         ]
 
         this.client.multipleQueries(
             queries
-        ).then(function (result) {
+        )
+        */
+       
+       this.index.search(this.options.query).then(function (result) {
             console.log(JSON.stringify(result, null, 2));
         }).catch(e => { console.log(e) });
     }
