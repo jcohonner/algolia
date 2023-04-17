@@ -21,45 +21,11 @@ const searchClient = algoliasearch(
   '23fef1254e41ec407b1fc80f852e4a40'
 );
 
-const hitsPerPageConf = {
-  all: {
-    movies: 20,
-    products: 5,
-    actors: 2,
-    directors: 3,
-  },
-  movies: {
-    movies: 20,
-    products: 1,
-    actors: 1,
-    directors: 1,
-  },
-  products: {
-    movies: 1,
-    products: 10,
-    actors: 1,
-    directors: 1,
-  },
-  actors: {
-    movies: 1,
-    products: 1,
-    actors: 20,
-    directors: 1,
-  },
-  directors: {
-    movies: 1,
-    products: 1,
-    actors: 1,
-    directors: 20,
-  },
-};
-
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentTab: 'all',
-      hitsPerPage: hitsPerPageConf.all,
     };
   }
 
@@ -73,7 +39,6 @@ class App extends React.Component {
     const newTab = event.target.closest('[data-tab]').dataset.tab;
     this.setState({
       currentTab: newTab,
-      hitsPerPage: hitsPerPageConf[newTab],
     });
   };
 
@@ -137,7 +102,7 @@ class App extends React.Component {
               className="search-panel"
             >
               <Index indexName="movies">
-                <Configure hitsPerPage={this.state.hitsPerPage.movies} />
+                <Configure hitsPerPage={20} />
                 <div className="search-panel__filters">
                   <RefinementList attribute="genres" />
                 </div>
@@ -160,7 +125,7 @@ class App extends React.Component {
               className="search-panel"
             >
               <Index indexName="demo_products" indexId="products">
-                <Configure hitsPerPage={this.state.hitsPerPage.products} />
+                <Configure hitsPerPage={10} />
                 <div className="search-panel__filters">
                   <RefinementList attribute="brand" />
                 </div>
@@ -183,7 +148,7 @@ class App extends React.Component {
               className="search-panel"
             >
               <Index indexName="actors">
-                <Configure hitsPerPage={this.state.hitsPerPage.actors} />
+                <Configure hitsPerPage={20} />
                 <div className="search-panel__results">
                   <Hits hitComponent={Person} />
 
@@ -201,7 +166,7 @@ class App extends React.Component {
               className="search-panel"
             >
               <Index indexName="directors">
-                <Configure hitsPerPage={this.state.hitsPerPage.directors} />
+                <Configure hitsPerPage={20} />
                 <div className="search-panel__results">
                   <Hits hitComponent={Person} />
 
@@ -309,7 +274,7 @@ const AllHitsRender = ({ allSearchResults }) => {
       <>
         <h2>Directors</h2>
         <ul>
-          {allSearchResults.directors.hits.map(hit => (
+          {allSearchResults.directors.hits.slice(0, 3).map(hit => (
             <li key={hit.objectID}>{hit.name}</li>
           ))}
         </ul>
@@ -322,7 +287,7 @@ const AllHitsRender = ({ allSearchResults }) => {
       <>
         <h2>Actors</h2>
         <ul>
-          {allSearchResults.actors.hits.map(hit => (
+          {allSearchResults.actors.hits.slice(0, 2).map(hit => (
             <li key={hit.objectID}>{hit.name}</li>
           ))}
         </ul>
@@ -332,7 +297,10 @@ const AllHitsRender = ({ allSearchResults }) => {
 
   // Mixing Results from different indexes
   const positions = [3, 6, 8, 12, 15];
-  const mixedResults = movies.map(movie => ({ hitType: 'Movie', hit: movie }));
+  const mixedResults = movies.map(movie => ({
+    hitType: 'Movie',
+    hit: movie,
+  }));
   if (allSearchResults.products && allSearchResults.products.hits.length > 0) {
     allSearchResults.products.hits.slice(0, 5).map((hit, index) =>
       mixedResults.splice(positions[index], 0, {
