@@ -12,6 +12,7 @@
   "dependencies": {
     "algoliasearch": "^4.12.0",
     "commander": "^8.3.0",
-    "handlebars": "^4.7.7"
+    "handlebars": "^4.7.7",
+    "keychain": "^1.5.0"
   }
 }

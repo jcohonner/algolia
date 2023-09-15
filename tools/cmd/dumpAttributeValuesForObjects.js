@@ -20,20 +20,23 @@ module.exports = class dumpAttributeValues extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        this.index.browseObjects({
-            query:'',
-            //attributesToRetrieve:[this.options.attribute],
-            batch: hits => {
-                hits.forEach(hit => {
-                    try {
-                    console.log(`${hit.objectID},"${hit.name}","${hit?.attributes["category-l1"]}","${hit?.attributes["category-l2"]}","${hit?.attributes["category-l3"]}"`)
-                } catch {
-                    console.log(`${hit.objectID},"${hit.name}"`)
-                }
 
-                    //console.log(hit[this.options.attribute]);
-                });
-            }
+      const objectIDs=[
+      ]
+
+      this.index.getObjects(objectIDs, {
+        // All the following parameters are optional
+        attributesToRetrieve: ["attributes.category-l1","attributes.category-l2","attributes.category-l3"]
+        // Any other requestOptions
+      }).then(({ results }) => {
+        results.forEach(hit => {
+          if (hit) {
+            console.log([hit.objectID, hit.attributes['category-l1'], hit.attributes['category-l2'], hit.attributes['category-l3']].join(","));
+          } else {
+            console.log("not found");
+          }
         });
+      });
+
     }
 }

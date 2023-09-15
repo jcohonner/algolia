@@ -1,6 +1,6 @@
 const AlgocliScript = require.main.require('./src/algocliScript');
 
-module.exports = class {{className}} extends AlgocliScript {
+module.exports = class saveObject extends AlgocliScript {
     /**
      * constructor
      */
@@ -13,14 +13,6 @@ module.exports = class {{className}} extends AlgocliScript {
 
 
     /**
-     * returns the required key type (admin|search|usage) for this command
-     */
-    static get keyType() {
-        return "admin";
-    }
-
-
-    /**
      * run function (mandatory)
      * available variables:
      * - this.options: contains your command options
@@ -28,6 +20,10 @@ module.exports = class {{className}} extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        console.log('running {{className}}', 'options =', this.options, 'index =', this.index);
+        //console.log('running saveObject', 'options =', this.options, 'index =', this.index);
+
+        this.index.saveObject({objectID: 'myID', name: 'myName'}).then(({ taskID }) => {
+            console.log(`taskID = ${taskID}`);
+        });
     }
 }

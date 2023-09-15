@@ -1,4 +1,5 @@
 const algoliasearch = require('algoliasearch');
+const keychain = require('keychain');
 
 module.exports = class AlgocliScript {
     /**
@@ -32,6 +33,26 @@ module.exports = class AlgocliScript {
         }
 
         return options;
+    }
+
+    /**
+     * returns the required key from MacOS keychain
+     * @todo fallback on admin key if no usage or search key is found
+     */
+    static async getApiKey(appID,keyType) {
+        const promise = new Promise((resolve, reject) => {
+            keychain.getPassword({
+                account: `${keyType}`,
+                service: `ALGOCLI_${appID}`,
+            }, function(err,pass) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(pass);
+                }
+            });
+        });
+        return promise;
     }
 
     /**

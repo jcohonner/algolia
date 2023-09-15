@@ -11,6 +11,12 @@ module.exports = class usage extends AlgocliScript {
         super(appid, apikey, index, optionString, defaultOptionValues);
     }
 
+    /**
+     * returns the required key type (admin|search|usage) for this command
+     */
+    static get keyType() {
+        return "usage";
+    }
 
     /**
      * run function (mandatory)
@@ -20,13 +26,17 @@ module.exports = class usage extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        const startDate = new Date('27 November 2022 00:00 UTC').toISOString();
+
+        //From 7 days ago to now
+        const startDate = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000)).toISOString();
         const endDate = new Date().toISOString();
 
 
-        //const url = `https://usage.algolia.com/1/usage/search_operations,total_search_operations,total_search_requests?startDate=${startDate}&endDate=${endDate}`;
-        const url = `https://usage.algolia.com/1/usage/file_size?startDate=${startDate}&endDate=${endDate}`;
-        //const url = 'https://usage.algolia.com/1/agg_usage/api_clients/since/30/days';
+        /*
+        
+        */
+
+        const url = `https://usage.algolia.com/1/usage/add_record_operations,batch_operations,delete_by_query_operations,delete_record_operations,get_record_operations,partial_update_record_operations,update_record_operations?startDate=${startDate}&endDate=${endDate}`;
         fetch(url, {
             method: 'GET',
             headers: {
@@ -36,9 +46,11 @@ module.exports = class usage extends AlgocliScript {
         }).then(response => {
             return response.json();
         }).then(data => {
-            //const sizeGB = Math.round(data.file_size[0].v/1024/1024/1024);
-            
-            console.log(data);
+            console.log(data)
+            /*data.total_search_requests.map(item => {
+               const date = new Date(item.t);
+               console.log(`${this.options.appid} - ${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} : ${item.v}`);
+            } )*/
         }).catch(err => {
             console.log(err);
         })
