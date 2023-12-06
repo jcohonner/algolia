@@ -1,5 +1,6 @@
 const algoliasearch = require('algoliasearch');
 const keychain = require('keychain');
+const aa = require('search-insights');
 
 module.exports = class AlgocliScript {
     /**
@@ -10,6 +11,7 @@ module.exports = class AlgocliScript {
         this.index = index ? this.client.initIndex(index):null;
         this.defaultOptionValues = {indexName:index, appid, apikey, ...defaultOptionValues};
         this.options = this.parseOptions(optionString);
+        this.aa = aa;
     }
 
     /**
