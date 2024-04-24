@@ -35,11 +35,11 @@ program
 
 program
     .command('addkey <appID> <keyType> <apiKey>')
-    .description('Add API Key for APPID') 
+    .description('Add API Key for APPID to keychain') 
     .action((appID,keyType,apiKey) => {
 
-        if (keyType !== 'admin' && keyType !== 'search' && keyType !== 'usage') {
-            console.log("keyType must be admin, search or usage");
+        if (keyType !== 'admin' && keyType !== 'search' && keyType !== 'usage' && keyType !== 'monitoring') {
+            console.log("keyType must be admin, search, usage or monitoring");
             return;
         }
 
@@ -58,11 +58,11 @@ program
 
 program
     .command('getkey <appID> <keyType>')
-    .description('Get API Key for APPID and type') 
+    .description('Get API Key for APPID and type from keychain') 
     .action((appID,keyType) => {
 
-        if (keyType !== 'admin' && keyType !== 'search' && keyType !== 'usage') {
-            console.log("keyType must be admin, search or usage");
+        if (keyType !== 'admin' && keyType !== 'search' && keyType !== 'usage' && keyType !== 'monitoring') {
+            console.log("keyType must be admin, search, usage or monitoring");
             return;
         }
 

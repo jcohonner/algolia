@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="/src/userToken.js"></script>
+    
     <!-- Google Tag Manager -->
     <script>
       (function (w, d, s, l, i) {
@@ -23,17 +25,17 @@
     />
     <meta name="theme-color" content="#000000" />
 
-    <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="shortcut icon" href="./favicon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="shortcut icon" href="/favicon.png" />
 
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/instantsearch.css@7/themes/algolia-min.css"
     />
-    <link rel="stylesheet" href="./src/index.css" />
-    <link rel="stylesheet" href="./src/app.css" />
+    <link rel="stylesheet" href="/src/index.css" />
+    <link rel="stylesheet" href="/src/app.css" />
 
-    <title>Google Tag Manager Demo</title>
+    <title>Search</title>
   </head>
 
   <body>
@@ -47,14 +49,16 @@
       ></iframe
     ></noscript>
     <!-- End Google Tag Manager (noscript) -->
+
+    <div class="ais-InstantSearch" data-insights-index="demo_products">
+      <h1>Google Tag Manager Demo - Trigger Group Test</h1>
+
+      ​<a href="#" name="button1" onclick="dataLayer.push({'event': 'button1-click'});">Button 1</a>
+      ​<a href="#" name="button2" onclick="dataLayer.push({'event': 'button2-click'});">Button 2</a>
+      ​<a href="#" name="button3" onclick="dataLayer.push({'event': 'button3-click'});">Button 3</a>
+
     </div>
 
-    <h1>Google Tag Manager Demo</h1>
-    <ul>
-      <li><a href="/search.html">Instant Search Page</a></li>
-      <li><a href="/category.html?category=Appliances">Category page Appliances</a></li>
-      <li><a href="/category.html?category=Headphones">Category page Headphones</a></li>
-      <li><a href="/triggers.html">Trigger group test</a></li>
-    </ul>
+    
   </body>
 </html>

@@ -2,3 +2,4 @@
 node_modules
 output
 quick-and-dirty
+.parcel-cache

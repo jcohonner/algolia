@@ -1,39 +1,38 @@
-const AlgocliScript = require.main.require('./src/algocliScript');
+const AlgocliScript = require.main.require("./src/algocliScript");
 
 module.exports = class dumpAttributeValues extends AlgocliScript {
-    /**
-     * constructor
-     */
-    constructor(appid, apikey, index, optionString) {
-        // add here your default options values
-        // it will be used when you use the command without options
-        let defaultOptionValues = {};
-        super(appid, apikey, index, optionString, defaultOptionValues);
-    }
+  /**
+   * constructor
+   */
+  constructor(appid, apikey, index, optionString) {
+    // add here your default options values
+    // it will be used when you use the command without options
+    let defaultOptionValues = {};
+    super(appid, apikey, index, optionString, defaultOptionValues);
+  }
 
+  /**
+   * run function (mandatory)
+   * available variables:
+   * - this.options: contains your command options
+   * - this.client: Algolia client instance
+   * - this.index: Algolia Index instance
+   */
+  async run() {
+    this.index.browseObjects({
+      query: "",
+      //attributesToRetrieve:[this.options.attribute],
+      batch: (hits) => {
+        hits.forEach((hit) => {
+          try {
+            console.log(`${hit.objectID}`);
+          } catch {
+            console.log(`${hit.objectID}`);
+          }
 
-    /**
-     * run function (mandatory)
-     * available variables:
-     * - this.options: contains your command options
-     * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
-     */
-    async run() {
-        this.index.browseObjects({
-            query:'',
-            //attributesToRetrieve:[this.options.attribute],
-            batch: hits => {
-                hits.forEach(hit => {
-                    try {
-                    console.log(`${hit.objectID},"${hit.name}","${hit?.attributes["category-l1"]}","${hit?.attributes["category-l2"]}","${hit?.attributes["category-l3"]}"`)
-                } catch {
-                    console.log(`${hit.objectID},"${hit.name}"`)
-                }
-
-                    //console.log(hit[this.options.attribute]);
-                });
-            }
+          //console.log(hit[this.options.attribute]);
         });
-    }
-}
+      },
+    });
+  }
+};

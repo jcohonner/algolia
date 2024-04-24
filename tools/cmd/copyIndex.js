@@ -1,6 +1,6 @@
 const AlgocliScript = require.main.require('./src/algocliScript');
 
-module.exports = class renameIndex extends AlgocliScript {
+module.exports = class copyindex extends AlgocliScript {
     /**
      * constructor
      */
@@ -13,6 +13,14 @@ module.exports = class renameIndex extends AlgocliScript {
 
 
     /**
+     * returns the required key type (admin|search|usage) for this command
+     */
+    static get keyType() {
+        return "admin";
+    }
+
+
+    /**
      * run function (mandatory)
      * available variables:
      * - this.options: contains your command options
@@ -20,6 +28,6 @@ module.exports = class renameIndex extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        this.client.moveIndex(this.index.indexName, this.options.newName).then(() => console.log('Index renamed')).catch(err => {console.log(err)});
+        this.client.copyIndex("")
     }
 }
