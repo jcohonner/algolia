@@ -21,28 +21,7 @@ module.exports = class search extends AlgocliScript {
   async run() {
     const query = "bruce willis";
     const params = {
-      hitsPerPage: 10,
-
-      rulesAtQueryTime: [
-        {
-          objectID: "reranking_search",
-          consequence: {
-            filterPromotes: true,
-            promote: [
-              {
-                objectIDs: ["410554"],
-                position: 0,
-              },
-            ],
-            userData: {
-              "promoted-by-searchML-count": 292,
-            },
-          },
-          description: "search reranking for query : perceuse makita 18v",
-        },
-      ],
-
-      attributesToRetrieve: ["objectID", "name"],
+      explain: true,
     };
 
     this.index
