@@ -3,6 +3,7 @@ const { program, Option  } = require('commander');
 const path = require("path");
 const keychain = require('keychain');
 
+
 program.version('0.0.1');
 
 program
@@ -21,13 +22,18 @@ program
     .addOption(new Option('-a, --appid <appid>', 'Algolia APP ID').env('ALGOLIA_APPID'))    
     .option("-i, --index <index>", "index name")
     .option("-o, --options <options>", "comma separated list of key:value options to pass to the script")
+    .option("-f, --file <filepath>", "path to an option json file")
     .action((script, options) => {
         const commandClass = require(path.resolve(script));
         const keyType = commandClass.keyType || 'admin';
 
         commandClass.getApiKey(options.appid,keyType).then(apiKey => {
-          const command = new commandClass(options.appid, apiKey, options.index, options.options);
-          command.run();
+          try { 
+            const command = new commandClass(options.appid, apiKey, options.index, options.options, options.file);
+            command.run();
+          } catch (e) {
+            console.log(e);
+          }
         }).catch(err => {
             console.log(`No ${keyType} key found for ${options.appid}`);
         });
@@ -66,17 +72,13 @@ program
             return;
         }
 
-        keychain.getPassword({
-            account: `${keyType}`,
-            service: `ALGOCLI_${appID}`,
-        }, function(err,pass) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(`${appID} key for ${keyType} is ${pass}`);
-            }
-        });
+        const scriptClass = require(`./src/algocliScript`);
 
+        scriptClass.getApiKey(appID,keyType).then(apiKey => {
+            console.log(`${appID} key for ${keyType} is ${apiKey}`);
+        }).catch(err => {
+            console.log(`No ${keyType} key found for ${options.appid}`);
+        });
     });
 
 program.parse(process.argv);

@@ -6,11 +6,19 @@ module.exports = class AlgocliScript {
     /**
      * constructor
      */
-    constructor(appid, apikey, index, optionString, defaultOptionValues) {
+    constructor(appid, apikey, index, optionString, defaultOptionValues, optionfilePath) {
         this.client = algoliasearch(appid,apikey);
         this.index = index ? this.client.initIndex(index):null;
-        this.defaultOptionValues = {indexName:index, appid, apikey, ...defaultOptionValues};
-        this.options = this.parseOptions(optionString);
+        this.indexName = index;
+        this.appid = appid;
+        this.apikey = apikey;
+
+        this.options = this.parseOptions(optionString, defaultOptionValues||{});
+
+        if (optionfilePath) {
+            this.options = {...this.options, ...require(optionfilePath)};
+        }
+
         this.aa = aa;
     }
 
@@ -18,8 +26,8 @@ module.exports = class AlgocliScript {
      * add here your default options values
      * it will be used when you use the command without options
      */
-    parseOptions(optionString) {
-        let options = this.defaultOptionValues;
+    parseOptions(optionString, defaultOptionValues) {
+        let options = {...defaultOptionValues};
 
         if (optionString) {
             optionString.split(',').forEach(option =>  {
@@ -55,6 +63,13 @@ module.exports = class AlgocliScript {
             });
         });
         return promise;
+    }
+
+    /**
+     * proper console.log Json
+     */
+    logJson(json) {
+        console.log(JSON.stringify(json, null, 2));
     }
 
     /**

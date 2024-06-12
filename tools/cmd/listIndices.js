@@ -4,11 +4,11 @@ module.exports = class listIndices extends AlgocliScript {
     /**
      * constructor
      */
-    constructor(appid, apikey, index, optionString) {
+    constructor(appid, apikey, index, optionString, optionfilePath) {
         // add here your default options values
         // it will be used when you use the command without options
         let defaultOptionValues = {};
-        super(appid, apikey, index, optionString, defaultOptionValues);
+        super(appid, apikey, index, optionString, defaultOptionValues, optionfilePath);
     }
 
 
