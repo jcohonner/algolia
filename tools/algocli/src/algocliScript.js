@@ -1,6 +1,7 @@
 const algoliasearch = require('algoliasearch');
 const keychain = require('keychain');
 const aa = require('search-insights');
+const prompts = require('prompts');
 
 module.exports = class AlgocliScript {
     /**
@@ -78,4 +79,23 @@ module.exports = class AlgocliScript {
     async run() {
         console.log('running {{className}}', 'options =', this.options, 'index =', this.index);
     }
+
+    /**
+     * ask for confirmation using prompts
+     * @param {*} message 
+     */
+    async confirm(message) {
+        const response = await prompts({
+            type: 'confirm',
+            name: 'value',
+            message: message,
+            initial: false
+        });
+
+        if (!response.value) {            
+            process.exit(0);
+        }
+        return response.value;
+    }
+
 }

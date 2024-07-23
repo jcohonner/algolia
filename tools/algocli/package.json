@@ -14,6 +14,7 @@
     "commander": "^8.3.0",
     "handlebars": "^4.7.7",
     "keychain": "^1.5.0",
+    "prompts": "^2.4.2",
     "search-insights": "^2.11.0"
   }
 }
