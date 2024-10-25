@@ -68,7 +68,8 @@ module.exports = class TMDBMovieExport {
 
         //Get movie list without language (en-US per default)
         let page = 1;
-        let {body: {results, total_pages} } = await this.tmdb.discoverMovie({page: page, include_adult:false });
+        const filters = { include_adult:false, release_date_lte: new Date().toISOString().split('T')[0] };
+        let {body: {results, total_pages} } = await this.tmdb.discoverMovie({page: page, ...filters});
         let movies = [];
         
         total_pages = Math.min(this.maxPages,total_pages);
@@ -82,7 +83,7 @@ module.exports = class TMDBMovieExport {
     
             if (page < total_pages) {
                 page++;
-                const response = await this.tmdb.discoverMovie({page: page, include_adult:false });
+                const response = await this.tmdb.discoverMovie({page: page, ...filters});
                 results = response.body.results;
             } else {
                 results = [];
@@ -104,6 +105,9 @@ module.exports = class TMDBMovieExport {
         try {
             const {body : movieDetails} = await this.tmdb.movieInfo({id: movieID, language: this.languages[0], append_to_response: 'credits'});
             
+            //remove if not yet released
+            if (movieDetails.status !== 'Released') return null;
+
             let movieData = {
                 objectID: movieDetails.id,
                 original_title: movieDetails.original_title,
@@ -151,6 +155,44 @@ module.exports = class TMDBMovieExport {
                 movieData.genres[language] = movieDetailLang.genres?.map(g => g.name);
                 movieData.poster[language] = getImageURL(movieDetailLang.poster_path); 
             }));
+
+            //Add categories & categoryPageIdentifiers
+            // [Genre] > [Decade]
+            
+            //Decade 80s, 90s, 2000s, 2010s
+            let decade = Math.floor(movieData.year/10)*10+'s';
+
+            if (movieData.year<2000) {
+                //remove century
+                decade = decade.substring(2);
+            }
+            
+            
+            movieData.categories = {};
+            movieData.categoryPageIdentifiers = {};
+
+            this.languages.forEach(language => {
+                movieData.genres[language].forEach(genre => {
+                    movieData.categories[language] = {
+                        "lvl0": [genre],
+                        "lvl1": [genre+' > '+decade],
+                        "lvl2": [genre+' > '+decade+' > ' + movieData.year]
+                    } 
+                    movieData.categoryPageIdentifiers[language] = [
+                        genre,
+                        genre+' > '+decade,
+                        genre+' > '+decade+' > ' + movieData.year
+                    ]
+
+                    if (movieData.featured) {
+                        movieData.categoryPageIdentifiers[language].push('featured');
+                    }
+
+                    if (movieData.on_sale) {
+                        movieData.categoryPageIdentifiers[language].push('on_sale');
+                    }
+                });
+            });
         
             return movieData;
         } catch {
@@ -166,8 +208,48 @@ module.exports = class TMDBMovieExport {
                 movie.overview = movie.overview[language];
                 movie.genres = movie.genres[language];
                 movie.poster = movie.poster[language];
+                movie.categories = movie.categories[language];
+                movie.categoryPageIdentifiers = movie.categoryPageIdentifiers[language];
                 return movie;
             }),null,4) , 'utf-8');
         });
+
+        //build list of categories
+        let categories = {};
+        movies.forEach(movie => {
+            this.languages.forEach(language => {
+                movie.categories[language].lvl0.forEach(category => {
+                    if (!categories[language]) {
+                        categories[language] = [];
+                    }
+                    if (!categories[language].includes(category)) {
+                        categories[language].push(category);
+                    }
+                });
+                movie.categories[language].lvl1.forEach(category => {
+                    if (!categories[language]) {
+                        categories[language] = [];
+                    }
+                    if (!categories[language].includes(category)) {
+                        categories[language].push(category);
+                    }
+                });
+            });
+        });
+
+        //write categories for each language
+        this.languages.forEach(language => {
+            let categoriesData = [];
+            categories[language].forEach(category => {
+                categoriesData.push({
+                    objectID: category,
+                    name: category,
+                    slug: category.replace(/ > /g, '/')
+                });
+            });
+
+            fs.writeFileSync(this.outputFolder+'categories-'+language+'.json', JSON.stringify(categoriesData,null,4) , 'utf-8');
+        });
+
     }
 }
