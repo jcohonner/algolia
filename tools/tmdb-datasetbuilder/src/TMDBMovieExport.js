@@ -68,7 +68,9 @@ module.exports = class TMDBMovieExport {
 
         //Get movie list without language (en-US per default)
         let page = 1;
-        const filters = { include_adult:false, release_date_lte: new Date().toISOString().split('T')[0] };
+
+        //Exclude TV shows, adult content, unreleased movies, vote count < 100
+        const filters = { include_adult:false, "release_date.lte": new Date().toISOString().split('T')[0], "vote_count.gte": 100, "without_genres":"10770" };
         let {body: {results, total_pages} } = await this.tmdb.discoverMovie({page: page, ...filters});
         let movies = [];
         
@@ -172,26 +174,27 @@ module.exports = class TMDBMovieExport {
             movieData.categoryPageIdentifiers = {};
 
             this.languages.forEach(language => {
-                movieData.genres[language].forEach(genre => {
-                    movieData.categories[language] = {
-                        "lvl0": [genre],
-                        "lvl1": [genre+' > '+decade],
-                        "lvl2": [genre+' > '+decade+' > ' + movieData.year]
-                    } 
-                    movieData.categoryPageIdentifiers[language] = [
-                        genre,
-                        genre+' > '+decade,
-                        genre+' > '+decade+' > ' + movieData.year
-                    ]
+                movieData.categories[language] = {
+                    "lvl0": [],
+                    "lvl1": [],
+                    "lvl2": []
+                };
+                movieData.categoryPageIdentifiers[language] = [];
 
-                    if (movieData.featured) {
-                        movieData.categoryPageIdentifiers[language].push('featured');
-                    }
-
-                    if (movieData.on_sale) {
-                        movieData.categoryPageIdentifiers[language].push('on_sale');
-                    }
+                movieData.genres[language].forEach(genre => {                    
+                    movieData.categories[language].lvl0.push(genre);
+                    movieData.categories[language].lvl1.push(genre+' > '+decade);
+                    movieData.categories[language].lvl2.push(genre+' > '+decade+' > ' + movieData.year);
+                    movieData.categoryPageIdentifiers[language].push(genre,genre+' > '+decade,genre+' > '+decade+' > ' + movieData.year);
                 });
+
+                if (movieData.featured) {
+                    movieData.categoryPageIdentifiers[language].push('featured');
+                }
+
+                if (movieData.on_sale) {
+                    movieData.categoryPageIdentifiers[language].push('on_sale');
+                }                
             });
         
             return movieData;
