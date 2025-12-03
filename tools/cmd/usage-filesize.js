@@ -15,7 +15,7 @@ module.exports = class usage extends AlgocliScript {
      * returns the required key type (admin|search|usage) for this command
      */
     static get keyType() {
-        return "usage";
+        return "admin";
     }
 
     /**
@@ -26,7 +26,7 @@ module.exports = class usage extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        const startDate = new Date('19 June 2023 00:00 UTC').toISOString();
+        const startDate = new Date('19 June 2024 00:00 UTC').toISOString();
         const endDate = new Date().toISOString();
 
 
@@ -34,17 +34,22 @@ module.exports = class usage extends AlgocliScript {
         const url = `https://usage.algolia.com/1/usage/file_size,records?startDate=${startDate}&endDate=${endDate}`;
         //const url = `https://usage.algolia.com/1/usage/records?startDate=${startDate}&endDate=${endDate}`;
         //const url = 'https://usage.algolia.com/1/agg_usage/api_clients/since/30/days';
+
+    
+
         fetch(url, {
             method: 'GET',
             headers: {
-                'X-Algolia-Application-Id': this.options.appid,
-                'X-Algolia-API-Key': this.options.apikey
+                'X-Algolia-Application-Id': this.appid,
+                'X-Algolia-API-Key': this.apikey
             }
         }).then(response => {
+            
             return response.json();
         }).then(data => {
+            
             const sizeGB = Math.round(data.file_size[0].v/1000/1000/1000);            
-            console.log([this.options.appid,this.options.name,sizeGB,data.records[0].v].join(','));
+            console.log([this.appid,this.options.name,sizeGB,data.records[0].v].join(','));
 
         
         }).catch(err => {

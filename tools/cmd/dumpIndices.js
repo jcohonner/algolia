@@ -1,14 +1,14 @@
 const AlgocliScript = require.main.require('./src/algocliScript');
 
-module.exports = class copyindex extends AlgocliScript {
+module.exports = class dumpIndices extends AlgocliScript {
     /**
      * constructor
      */
-    constructor(appid, apikey, index, optionString) {
+    constructor(appid, apikey, index, optionString, optionfilePath) {
         // add here your default options values
         // it will be used when you use the command without options
         let defaultOptionValues = {};
-        super(appid, apikey, index, optionString, defaultOptionValues);
+        super(appid, apikey, index, optionString, defaultOptionValues, optionfilePath);
     }
 
 
@@ -28,7 +28,8 @@ module.exports = class copyindex extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-               //get regexp for index name
+
+        //get regexp for index name
                 
         const indexNameRegexp = await this.promptForText("index name or regexp?");
         if (!indexNameRegexp) {

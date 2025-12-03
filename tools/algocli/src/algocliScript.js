@@ -2,6 +2,7 @@ const algoliasearch = require('algoliasearch');
 const keychain = require('keychain');
 const aa = require('search-insights');
 const prompts = require('prompts');
+const path = require("path");
 
 module.exports = class AlgocliScript {
     /**
@@ -17,7 +18,7 @@ module.exports = class AlgocliScript {
         this.options = this.parseOptions(optionString, defaultOptionValues||{});
 
         if (optionfilePath) {
-            this.options = {...this.options, ...require(optionfilePath)};
+            this.options = {...this.options, ...require(path.resolve(optionfilePath))};
         }
 
         this.aa = aa;
@@ -96,6 +97,31 @@ module.exports = class AlgocliScript {
             process.exit(0);
         }
         return response.value;
+    }
+
+    async promptForText(message) {
+        const response = await prompts({
+            type: 'text',
+            name: 'value',
+            message: message,
+        });
+
+        return response.value;
+    }
+
+
+    async getListOfIndicesByRegexp() {
+        const indexNameRegexp = await this.promptForText("index name or regexp?");
+        if (!indexNameRegexp) {
+            console.log("No index name or regexp provided");
+            return [];
+        }
+        
+        // get all indices
+        const indices = await this.client.listIndices();
+        
+        // filter indices
+       return indices.items.filter(i => i.name.match(indexNameRegexp)).map(i => i.name);
     }
 
 }

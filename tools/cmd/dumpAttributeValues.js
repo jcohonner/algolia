@@ -19,20 +19,20 @@ module.exports = class dumpAttributeValues extends AlgocliScript {
    * - this.index: Algolia Index instance
    */
   async run() {
+
+    const brandNames = {};
+
     this.index.browseObjects({
       query: "",
-      //attributesToRetrieve:[this.options.attribute],
+      attributesToRetrieve:['BrandNameEn'],
       batch: (hits) => {
+        console.log('.');
         hits.forEach((hit) => {
-          try {
-            console.log(`${hit.objectID}`);
-          } catch {
-            console.log(`${hit.objectID}`);
-          }
-
-          //console.log(hit[this.options.attribute]);
+          brandNames[hit.BrandNameEn] = true;
         });
       },
     });
+
+    console.log(Object.keys(brandNames).join("\n"));
   }
 };

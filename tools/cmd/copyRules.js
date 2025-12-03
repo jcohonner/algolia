@@ -1,3 +1,5 @@
+const { exit } = require("process");
+
 const AlgocliScript = require.main.require('./src/algocliScript');
 
 module.exports = class copyRules extends AlgocliScript {
@@ -44,14 +46,32 @@ module.exports = class copyRules extends AlgocliScript {
      * - this.index: Algolia Index instance
      */
     async run() {
-        if (!this.options.dest) {
-            throw new Error('Missing -o "dest:index" option');
+
+        let destIndexName = this.options.dest;
+        const clearExistingRules = this.options.clear || false;
+
+        if (!destIndexName) {
+            destIndexName = await this.promptForText("destination index?");
+            if (!destIndexName) exit(0);
         }
 
-        await this.confirm(`Are you sure you want to copy rules from ${this.indexName} to ${this.options.dest}?`);
+        if (clearExistingRules) {
+          await this.confirm(`Are you sure you want to REPLACE rules in ${destIndexName} by those in ${this.indexName}?`);
+        } else {
+          await this.confirm(`Are you sure you want to COPY rules from ${this.indexName} to ${destIndexName}?`);
+        }
 
-        const destIndex = this.client.initIndex(this.options.dest);
+
+        const destIndex = this.client.initIndex(this.options.destIndexName);
         const rules = await this.getAllRules(this.index);
-        await destIndex.saveRules(rules, { forwardToReplicas: false });   
+        console.log(rules);
+        try {
+          console.log(`Copying ${rules.length} rules from ${this.indexName} to ${destIndexName}`);
+          const response = await  destIndex.saveRules(rules,);   
+          console.log(response);
+        } catch (e) { 
+          console.error(`Error setting settings on destination index: ${e.message}`);
+          exit(1);            
+        }
     }
 }

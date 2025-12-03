@@ -27,25 +27,41 @@ module.exports = class usage extends AlgocliScript {
      */
     async run() {
 
-        //From 7 days ago to now
-        const startDate = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000)).toISOString();
+        
+        const startDate = new Date("5/1/2024").toISOString();
         const endDate = new Date().toISOString();
 
 
-        const url = `https://usage.algolia.com/1/usage/search_operations,total_search_operations,total_search_requests?startDate=${startDate}&endDate=${endDate}`;
+        const url = `https://usage.algolia.com/1/usage/total_search_requests,querysuggestions_total_search_requests?startDate=${startDate}&endDate=${endDate}&granularity=daily`;
         fetch(url, {
             method: 'GET',
             headers: {
-                'X-Algolia-Application-Id': this.options.appid,
-                'X-Algolia-API-Key': this.options.apikey
+                'X-Algolia-Application-Id': this.appid,
+                'X-Algolia-API-Key': this.apikey
             }
         }).then(response => {
             return response.json();
         }).then(data => {
+
+            const billed_search_requests_per_day = {}
+
             data.total_search_requests.map(item => {
-               const date = new Date(item.t);
-               console.log(`${this.options.appid} - ${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} : ${item.v}`);
-            } )
+                const date = new Date(item.t);
+                billed_search_requests_per_day[`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`] = item.v;
+            } );
+
+            //substract the querysuggestions_total_search_requests from the total_search_requests
+            data.querysuggestions_total_search_requests.map(item => {
+                const date = new Date(item.t);
+                billed_search_requests_per_day[`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`] -= item.v;
+            });
+
+            //output for CSV
+            console.log('Date,Search Requests');
+            for (const [key, value] of Object.entries(billed_search_requests_per_day)) {
+                console.log(`${key},${value}`);
+            }
+
         }).catch(err => {
             console.log(err);
         })

@@ -27,11 +27,14 @@ module.exports = class setSettings extends AlgocliScript {
    */
   async run() {
 
+
     const settings = this.options[this.indexName];
 
     if (!settings) {
       console.log("No settings found for this index");
       return;
+    } else {
+      console.log(settings);
     }
 
     

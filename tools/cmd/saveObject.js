@@ -22,7 +22,9 @@ module.exports = class saveObject extends AlgocliScript {
     async run() {
         //console.log('running saveObject', 'options =', this.options, 'index =', this.index);
 
-        this.index.saveObject({objectID: 'myID', name: 'myName'}).then(({ taskID }) => {
+
+
+        this.index.saveObject({objectID: '00000300', name: 'myName'}).then(({ taskID }) => {
             console.log(`taskID = ${taskID}`);
         });
     }
