@@ -8,7 +8,14 @@ module.exports = class setSettings extends AlgocliScript {
     // add here your default options values
     // it will be used when you use the command without options
     let defaultOptionValues = {};
-    super(appid, apikey, index, optionString, defaultOptionValues, optionfilePath);
+    super(
+      appid,
+      apikey,
+      index,
+      optionString,
+      defaultOptionValues,
+      optionfilePath
+    );
   }
 
   /**
@@ -26,21 +33,15 @@ module.exports = class setSettings extends AlgocliScript {
    * - this.index: Algolia Index instance
    */
   async run() {
+    const indexSettings = this.options[this.indexName];
 
-
-    const settings = this.options[this.indexName];
-
-    if (!settings) {
+    if (!indexSettings) {
       console.log("No settings found for this index");
       return;
-    } else {
-      console.log(settings);
     }
 
-    
-
-    this.index
-      .setSettings(settings)
+    this.client
+      .setSettings({ indexName: this.indexName, indexSettings })
       .then(() => {
         console.log("Settings updated");
       })
