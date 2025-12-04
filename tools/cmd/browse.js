@@ -27,20 +27,20 @@ module.exports = class browse extends AlgocliScript {
    */
   async run() {
     const browseParams = {
-      filters: "genres:Action",
+      filters: "",
     };
-    let hits = [];
+    let allHits = [];
 
     await this.client.browseObjects({
       indexName: this.indexName,
       browseParams,
       aggregator: ({ hits }) => {
-        hits.push(...hits);
+        allHits.push(...hits);
       },
     });
 
-    hits.slice(0, 20).forEach((hit) => {
-      console.log(hit.objectID + " : " + hit.title);
+    allHits.forEach((hit) => {
+      console.log(hit.objectID);
     });
   }
 };
