@@ -13,7 +13,7 @@ This behavior relies on Algolia filter scoring.
 
 Open in Code Sandbox:
 
-https://codesandbox.io/p/devbox/github/jcohonner/algolia/codesanboxes/react/dualcolor-refinement
+https://codesandbox.io/p/devbox/github/jcohonner/algolia/tree/main/codesanboxes/react/dualcolor-refinement
 
 # React + Vite
 
