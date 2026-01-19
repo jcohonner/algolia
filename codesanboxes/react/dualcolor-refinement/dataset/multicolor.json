@@ -1,0 +1,356 @@
+[
+  {
+    "objectID": "primary: yellow | secondary: red",
+    "colors": [
+      "primary|yellow|#FFFF00",
+      "secondary|red|#FF0000"
+    ],
+    "primary": [
+      "yellow"
+    ],
+    "secondary": [
+      "red"
+    ],
+    "priority": 82
+  },
+  {
+    "objectID": "primary: yellow | secondary: blue",
+    "colors": [
+      "primary|yellow|#FFFF00",
+      "secondary|blue|#0000FF"
+    ],
+    "primary": [
+      "yellow"
+    ],
+    "secondary": [
+      "blue"
+    ],
+    "priority": 15
+  },
+  {
+    "objectID": "primary: yellow | secondary: red, blue",
+    "colors": [
+      "primary|yellow|#FFFF00",
+      "secondary|red|#FF0000",
+      "secondary|blue|#0000FF"
+    ],
+    "primary": [
+      "yellow"
+    ],
+    "secondary": [
+      "red",
+      "blue"
+    ],
+    "priority": 4
+  },
+  {
+    "objectID": "primary: red | secondary: yellow",
+    "colors": [
+      "primary|red|#FF0000",
+      "secondary|yellow|#FFFF00"
+    ],
+    "primary": [
+      "red"
+    ],
+    "secondary": [
+      "yellow"
+    ],
+    "priority": 95
+  },
+  {
+    "objectID": "primary: red | secondary: blue, green",
+    "colors": [
+      "primary|red|#FF0000",
+      "secondary|blue|#0000FF",
+      "secondary|green|#008000"
+    ],
+    "primary": [
+      "red"
+    ],
+    "secondary": [
+      "blue",
+      "green"
+    ],
+    "priority": 36
+  },
+  {
+    "objectID": "primary: red | secondary: orange",
+    "colors": [
+      "primary|red|#FF0000",
+      "secondary|orange|#FFA500"
+    ],
+    "primary": [
+      "red"
+    ],
+    "secondary": [
+      "orange"
+    ],
+    "priority": 32
+  },
+  {
+    "objectID": "primary: blue | secondary: yellow",
+    "colors": [
+      "primary|blue|#0000FF",
+      "secondary|yellow|#FFFF00"
+    ],
+    "primary": [
+      "blue"
+    ],
+    "secondary": [
+      "yellow"
+    ],
+    "priority": 29
+  },
+  {
+    "objectID": "primary: blue | secondary: green",
+    "colors": [
+      "primary|blue|#0000FF",
+      "secondary|green|#008000"
+    ],
+    "primary": [
+      "blue"
+    ],
+    "secondary": [
+      "green"
+    ],
+    "priority": 18
+  },
+  {
+    "objectID": "primary: blue | secondary: orange, red",
+    "colors": [
+      "primary|blue|#0000FF",
+      "secondary|orange|#FFA500",
+      "secondary|red|#FF0000"
+    ],
+    "primary": [
+      "blue"
+    ],
+    "secondary": [
+      "orange",
+      "red"
+    ],
+    "priority": 95
+  },
+  {
+    "objectID": "primary: green | secondary: yellow",
+    "colors": [
+      "primary|green|#008000",
+      "secondary|yellow|#FFFF00"
+    ],
+    "primary": [
+      "green"
+    ],
+    "secondary": [
+      "yellow"
+    ],
+    "priority": 14
+  },
+  {
+    "objectID": "primary: green | secondary: blue, orange",
+    "colors": [
+      "primary|green|#008000",
+      "secondary|blue|#0000FF",
+      "secondary|orange|#FFA500"
+    ],
+    "primary": [
+      "green"
+    ],
+    "secondary": [
+      "blue",
+      "orange"
+    ],
+    "priority": 87
+  },
+  {
+    "objectID": "primary: green | secondary: red",
+    "colors": [
+      "primary|green|#008000",
+      "secondary|red|#FF0000"
+    ],
+    "primary": [
+      "green"
+    ],
+    "secondary": [
+      "red"
+    ],
+    "priority": 95
+  },
+  {
+    "objectID": "primary: orange | secondary: blue",
+    "colors": [
+      "primary|orange|#FFA500",
+      "secondary|blue|#0000FF"
+    ],
+    "primary": [
+      "orange"
+    ],
+    "secondary": [
+      "blue"
+    ],
+    "priority": 70
+  },
+  {
+    "objectID": "primary: orange | secondary: green, yellow",
+    "colors": [
+      "primary|orange|#FFA500",
+      "secondary|green|#008000",
+      "secondary|yellow|#FFFF00"
+    ],
+    "primary": [
+      "orange"
+    ],
+    "secondary": [
+      "green",
+      "yellow"
+    ],
+    "priority": 12
+  },
+  {
+    "objectID": "primary: orange | secondary: red",
+    "colors": [
+      "primary|orange|#FFA500",
+      "secondary|red|#FF0000"
+    ],
+    "primary": [
+      "orange"
+    ],
+    "secondary": [
+      "red"
+    ],
+    "priority": 76
+  },
+  {
+    "objectID": "primary: black | secondary: white",
+    "colors": [
+      "primary|black|#000000",
+      "secondary|white|#FFFFFF"
+    ],
+    "primary": [
+      "black"
+    ],
+    "secondary": [
+      "white"
+    ],
+    "priority": 55
+  },
+  {
+    "objectID": "primary: white | secondary: black, gray",
+    "colors": [
+      "primary|white|#FFFFFF",
+      "secondary|black|#000000",
+      "secondary|gray|#808080"
+    ],
+    "primary": [
+      "white"
+    ],
+    "secondary": [
+      "black",
+      "gray"
+    ],
+    "priority": 5
+  },
+  {
+    "objectID": "primary: gray | secondary: white",
+    "colors": [
+      "primary|gray|#808080",
+      "secondary|white|#FFFFFF"
+    ],
+    "primary": [
+      "gray"
+    ],
+    "secondary": [
+      "white"
+    ],
+    "priority": 4
+  },
+  {
+    "objectID": "primary: teal | secondary: yellow, navy",
+    "colors": [
+      "primary|teal|#008080",
+      "secondary|yellow|#FFFF00",
+      "secondary|navy|#000080"
+    ],
+    "primary": [
+      "teal"
+    ],
+    "secondary": [
+      "yellow",
+      "navy"
+    ],
+    "priority": 12
+  },
+  {
+    "objectID": "primary: navy | secondary: teal",
+    "colors": [
+      "primary|navy|#000080",
+      "secondary|teal|#008080"
+    ],
+    "primary": [
+      "navy"
+    ],
+    "secondary": [
+      "teal"
+    ],
+    "priority": 28
+  },
+  {
+    "objectID": "primary: pink | secondary: gray",
+    "colors": [
+      "primary|pink|#FFC0CB",
+      "secondary|gray|#808080"
+    ],
+    "primary": [
+      "pink"
+    ],
+    "secondary": [
+      "gray"
+    ],
+    "priority": 30
+  },
+  {
+    "objectID": "primary: brown | secondary: beige",
+    "colors": [
+      "primary|brown|#A52A2A",
+      "secondary|beige|#F5F5DC"
+    ],
+    "primary": [
+      "brown"
+    ],
+    "secondary": [
+      "beige"
+    ],
+    "priority": 65
+  },
+  {
+    "objectID": "primary: beige | secondary: brown, white",
+    "colors": [
+      "primary|beige|#F5F5DC",
+      "secondary|brown|#A52A2A",
+      "secondary|white|#FFFFFF"
+    ],
+    "primary": [
+      "beige"
+    ],
+    "secondary": [
+      "brown",
+      "white"
+    ],
+    "priority": 78
+  },
+  {
+    "objectID": "primary: cyan | secondary: magenta, yellow",
+    "colors": [
+      "primary|cyan|#00FFFF",
+      "secondary|magenta|#FF00FF",
+      "secondary|yellow|#FFFF00"
+    ],
+    "primary": [
+      "cyan"
+    ],
+    "secondary": [
+      "magenta",
+      "yellow"
+    ],
+    "priority": 4
+  }
+]
