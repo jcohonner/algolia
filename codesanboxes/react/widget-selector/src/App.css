@@ -1,0 +1,18 @@
+body {
+  padding:10px;
+}
+
+.search-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.search-panel h2 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+
+
