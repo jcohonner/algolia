@@ -12,8 +12,8 @@ first you need to define a condition less rule in your configuration with the in
     "userData": {
       "facetMapping": {
         "price": {widget: "slider"},
-        "featured": {widget: "toggleRefinement"},
-        "actors": {widget: "refinementList", props: {"searchable": true}}
+        "featured": {widget: "toggle"},
+        "actors": {widget: "refinement", props: {"searchable": true}}
       }
     }
   },
