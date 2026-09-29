@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Proxy HTML hits</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8/themes/satellite-min.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Movies — hits rendered by the proxy</h1>
+      <div id="searchbox"></div>
+    </header>
+    <main>
+      <aside>
+        <h3>Genres</h3>
+        <div id="genres"></div>
+        <h3>Actors</h3>
+        <div id="actors"></div>
+        <h3>Year</h3>
+        <div id="year"></div>
+      </aside>
+      <section>
+        <div id="stats"></div>
+        <div id="hits"></div>
+        <div id="pagination"></div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -28,6 +28,7 @@ module.exports = class browse extends AlgocliScript {
   async run() {
     const browseParams = {
       filters: "",
+      hitsPerPage: 10,
     };
     let allHits = [];
 
@@ -42,5 +43,10 @@ module.exports = class browse extends AlgocliScript {
     allHits.forEach((hit) => {
       console.log(hit.objectID);
     });
+
+    -(
+      // print the response
+      console.log(JSON.stringify(allHits, null, 2))
+    );
   }
 };

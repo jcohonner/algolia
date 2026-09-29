@@ -1,0 +1,14 @@
+{
+  "name": "proxy-html",
+  "version": "1.0.0",
+  "description": "InstantSearch.js + Node proxy that renders each hit as HTML and injects a filter",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "algoliasearch": "^5.59.0",
+    "express": "^4.21.2"
+  }
+}

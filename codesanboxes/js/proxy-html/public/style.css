@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #f5f5fa;
+  color: #23263b;
+}
+
+header {
+  padding: 1rem 2rem;
+  background: #fff;
+  border-bottom: 1px solid #e0e0ea;
+}
+
+header h1 {
+  margin: 0 0 1rem;
+  font-size: 1.4rem;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 2rem;
+  padding: 1rem 2rem;
+}
+
+aside h3 {
+  margin: 1rem 0 0.5rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+#stats {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #5a5e9a;
+}
+
+.ais-Hits-item {
+  padding: 0;
+}
+
+.hit {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  width: 100%;
+}
+
+.hit-poster {
+  width: 90px;
+  height: 135px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.hit-title {
+  margin: 0 0 0.3rem;
+  font-size: 1.1rem;
+}
+
+.hit-title mark {
+  background: #ffe58f;
+  color: inherit;
+}
+
+.hit-year {
+  font-weight: normal;
+  color: #777;
+}
+
+.hit-meta,
+.hit-genres,
+.hit-overview,
+.hit-price {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.hit-overview {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: #555;
+}
+
+.hit-genres span {
+  display: inline-block;
+  margin-right: 0.3rem;
+  padding: 0 0.4rem;
+  border-radius: 3px;
+  background: #eef0ff;
+  font-size: 0.8rem;
+}
+
+.hit-badge {
+  margin-left: 0.5rem;
+  padding: 0 0.4rem;
+  border-radius: 3px;
+  background: #e8600a;
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.hit-price {
+  font-weight: bold;
+}
+
+#pagination {
+  margin: 1rem 0;
+}
+
+@media (max-width: 700px) {
+  main {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+}

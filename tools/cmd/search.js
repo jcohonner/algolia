@@ -19,15 +19,15 @@ module.exports = class search extends AlgocliScript {
    * - this.index: Algolia Index instance
    */
   async run() {
-    const query = "bruce willis";
     const params = {
-      explain: true,
+      indexName: this.indexName,
+      query: "speedy",
     };
 
-    this.index
-      .search(query, params)
+    this.client
+      .search([params])
       .then(function (result) {
-        console.log(JSON.stringify(result, null, 2));
+        console.log(JSON.stringify(result.results[0].extensions, null, 2));
       })
       .catch((e) => {
         console.log(e);

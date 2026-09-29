@@ -19,7 +19,8 @@ module.exports = class getTask extends AlgocliScript {
    * - this.index: Algolia Index instance
    */
   async run() {
-    const path = `/1/indexes/${this.options.indexName}/task/${this.options.taskID}`;
+    console.log(this.options, this);
+    const path = `/1/indexes/${this.indexName}/task/${this.options.taskID}`;
     try {
       let task = await this.client.customGet({ path });
       console.log({ path, task });
