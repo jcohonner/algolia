@@ -30,7 +30,6 @@ module.exports = class setSettings extends AlgocliScript {
    * available variables:
    * - this.options: contains your command options
    * - this.client: Algolia client instance
-   * - this.index: Algolia Index instance
    */
   async run() {
     const indexSettings = this.options[this.indexName];
@@ -40,13 +39,14 @@ module.exports = class setSettings extends AlgocliScript {
       return;
     }
 
-    this.client
-      .setSettings({ indexName: this.indexName, indexSettings })
-      .then(() => {
-        console.log("Settings updated");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    await this.confirm(
+      `Are you sure you want to APPLY SETTINGS (${Object.keys(indexSettings).join(", ")}) to index ${this.indexName}?`
+    );
+    try {
+      await this.client.setSettings({ indexName: this.indexName, indexSettings });
+      console.log("Settings updated");
+    } catch (err) {
+      console.log(err);
+    }
   }
 };

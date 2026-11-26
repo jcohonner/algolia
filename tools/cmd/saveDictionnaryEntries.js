@@ -17,23 +17,25 @@ module.exports = class saveDictionnaryEntries extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        const objectID = 'tshirt';
-        const language = 'en';
-        const words = ['tshirt', 'tshirts', 't shirt', 't shirts', 't-shirt', 't-shirts']
+    const objectID = 'tshirt';
+    const language = 'en';
+    const words = ['tshirt', 'tshirts', 't shirt', 't shirts', 't-shirt', 't-shirts'];
 
-        this.client.saveDictionaryEntries('plurals',
-            [{
-                objectID,
-                language,
-                words
-            }]
-        ).then(res => {
-            console.log(res);
-        }).catch(err => {
-            console.log(err);
-        })
+    await this.confirm(
+      `Are you sure you want to ADD the plurals dictionary entry "${objectID}" (${language}) on app ${this.appid}?`
+    );
+    try {
+      const res = await this.client.batchDictionaryEntries({
+        dictionaryName: 'plurals',
+        batchDictionaryEntriesParams: {
+          requests: [{ action: 'addEntry', body: { objectID, language, words } }],
+        },
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
     }
-}
+  }
+};

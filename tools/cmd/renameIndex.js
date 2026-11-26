@@ -17,9 +17,26 @@ module.exports = class renameIndex extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        this.client.moveIndex(this.index.indexName, this.options.newName).then(() => console.log('Index renamed')).catch(err => {console.log(err)});
+    if (!this.options.newName) {
+      throw new Error('You must specify a new name -o newName:<name>');
     }
-}
+
+    await this.confirm(
+      `Are you sure you want to RENAME (move) index ${this.indexName} to ${this.options.newName}? The destination index will be overwritten and the source removed.`
+    );
+    try {
+      await this.client.operationIndex({
+        indexName: this.indexName,
+        operationIndexParams: {
+          operation: 'move',
+          destination: this.options.newName,
+        },
+      });
+      console.log('Index renamed');
+    } catch (err) {
+      console.log(err);
+    }
+  }
+};

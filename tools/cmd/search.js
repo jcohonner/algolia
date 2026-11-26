@@ -16,21 +16,15 @@ module.exports = class search extends AlgocliScript {
    * available variables:
    * - this.options: contains your command options
    * - this.client: Algolia client instance
-   * - this.index: Algolia Index instance
    */
   async run() {
-    const params = {
-      indexName: this.indexName,
-      query: "speedy",
-    };
-
-    this.client
-      .search([params])
-      .then(function (result) {
-        console.log(JSON.stringify(result.results[0].extensions, null, 2));
-      })
-      .catch((e) => {
-        console.log(e);
+    try {
+      const result = await this.client.search({
+        requests: [{ indexName: this.indexName, query: "speedy" }],
       });
+      console.log(JSON.stringify(result.results[0].extensions, null, 2));
+    } catch (e) {
+      console.log(e);
+    }
   }
 };

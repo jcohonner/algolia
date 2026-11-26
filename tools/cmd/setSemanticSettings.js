@@ -30,7 +30,6 @@ module.exports = class setSettings extends AlgocliScript {
    * available variables:
    * - this.options: contains your command options
    * - this.client: Algolia client instance
-   * - this.index: Algolia Index instance
    */
   async run() {
     const indexSettings = this.options[this.indexName];
@@ -39,21 +38,22 @@ module.exports = class setSettings extends AlgocliScript {
       console.log("No settings found for this index");
       return;
     }
-    this.client
-      .customPut({
+    await this.confirm(
+      `Are you sure you want to APPLY SEMANTIC SETTINGS to index ${this.indexName}?`
+    );
+    try {
+      await this.client.customPut({
         path: `1/indexes/${this.indexName}/semanticSearch/settings`,
         body: indexSettings,
-      })
-      .then(() => {
-        console.log(
-          `Semantic Settings applied successfully to index: ${this.indexName}`,
-        );
-      })
-      .catch((err) => {
-        console.error(
-          `Error applying semantic settings to index: ${this.indexName}`,
-          err,
-        );
       });
+      console.log(
+        `Semantic Settings applied successfully to index: ${this.indexName}`
+      );
+    } catch (err) {
+      console.error(
+        `Error applying semantic settings to index: ${this.indexName}`,
+        err
+      );
+    }
   }
 };

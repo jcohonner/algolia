@@ -25,9 +25,9 @@ module.exports = class {{className}} extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
+     * - this.indexName: index name
      */
     async run() {
-        console.log('running {{className}}', 'options =', this.options, 'index =', this.index);
+        console.log('running {{className}}', 'options =', this.options, 'index =', this.indexName);
     }
 }

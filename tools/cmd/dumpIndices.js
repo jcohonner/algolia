@@ -25,7 +25,6 @@ module.exports = class dumpIndices extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
 
@@ -60,17 +59,14 @@ module.exports = class dumpIndices extends AlgocliScript {
             const indexFile = `./output/${indexName}.json`;
             console.log(`Dumping ${indexName} to ${indexFile}`);
             
-            let hits = [];
-            // Get all records as an iterator
-            const index = this.client.initIndex(indexName);
-            await index.browseObjects({
-            batch: batch => {
-                hits = hits.concat(batch);
-            }
-            }).then(() => {            
-                const fs = require('fs');
-                fs.writeFileSync(indexFile, JSON.stringify(hits, null, 2));}
-            );
+            const hits = [];
+            await this.client.browseObjects({
+                indexName,
+                aggregator: (response) => {
+                    hits.push(...response.hits);
+                },
+            });
+            require('fs').writeFileSync(indexFile, JSON.stringify(hits, null, 2));
         };
     }
 }

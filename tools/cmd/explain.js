@@ -17,34 +17,28 @@ module.exports = class explain extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        //console.log('running explain', 'options =', this.options, 'index =', this.index);
-        const results = await this.index.search("****", {
-            "analytics": false,
-            "attributesToRetrieve": [
-                "*"
-            ],
-            // ruleContexts: ["reranking-search"],
-            "attributesToSnippet": [],
-            "attributesToHighlight": [],
-            "enableABTest": false,
-            "explain": [
-                "*"
-            ],
-            "facets": [
-                "*"
-            ],
-            "getRankingInfo": true,
-            "hitsPerPage": 10,
-            "maxValuesPerFacet": 100,
-            "page": 0,
-            "responseFields": [
-                "*"
-            ],
-        });
+    const results = await this.client.searchSingleIndex({
+      indexName: this.indexName,
+      searchParams: {
+        query: "****",
+        analytics: false,
+        attributesToRetrieve: ["*"],
+        // ruleContexts: ["reranking-search"],
+        attributesToSnippet: [],
+        attributesToHighlight: [],
+        enableABTest: false,
+        explain: ["*"],
+        facets: ["*"],
+        getRankingInfo: true,
+        hitsPerPage: 10,
+        maxValuesPerFacet: 100,
+        page: 0,
+        responseFields: ["*"],
+      },
+    });
 
-        console.log(JSON.stringify(results, null, 2));
-    }
-}
+    console.log(JSON.stringify(results, null, 2));
+  }
+};

@@ -22,11 +22,8 @@ module.exports = class compareSettings extends AlgocliScript {
 
 
     async getSettings(index) {
-        const indexInstance = this.client.initIndex(index);
-        return indexInstance.getSettings().then(settings => {
-            
-            return {index, settings};
-        })
+        const settings = await this.client.getSettings({ indexName: index });
+        return {index, settings};
     }
 
     /**
@@ -34,7 +31,6 @@ module.exports = class compareSettings extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
 

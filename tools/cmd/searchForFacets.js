@@ -16,32 +16,36 @@ module.exports = class search extends AlgocliScript {
    * available variables:
    * - this.options: contains your command options
    * - this.client: Algolia client instance
-   * - this.index: Algolia Index instance
    */
   async run() {
     const params = {
       indexName: this.indexName,
-      facetName: "fabricant_libelle_logo", //"fabricant_libelle_logo",
+      facetName: "fabricant_libelle_logo",
       query: "",
       enableABTest: false,
     };
 
-    this.client
-      .searchForFacetValues(params)
-      .then(function (result) {
-        console.log(JSON.stringify(result, null, 2));
-      })
-      .catch((e) => {
-        console.log(e);
+    try {
+      const facetValues = await this.client.searchForFacetValues({
+        indexName: params.indexName,
+        facetName: params.facetName,
+        searchForFacetValuesRequest: { facetQuery: params.query },
       });
+      console.log(JSON.stringify(facetValues, null, 2));
 
-    this.client
-      .search([{ type: "facet", facet: params.facetName, ...params }])
-      .then(function (result) {
-        console.log(JSON.stringify(result, null, 2));
-      })
-      .catch((e) => {
-        console.log(e);
+      const result = await this.client.search({
+        requests: [
+          {
+            indexName: params.indexName,
+            type: "facet",
+            facet: params.facetName,
+            facetQuery: params.query,
+          },
+        ],
       });
+      console.log(JSON.stringify(result, null, 2));
+    } catch (e) {
+      console.log(e);
+    }
   }
 };

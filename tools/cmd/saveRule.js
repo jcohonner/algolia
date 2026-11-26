@@ -17,33 +17,37 @@ module.exports = class saveObject extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        //console.log('running saveObject', 'options =', this.options, 'index =', this.index);
+    const rule = {
+      objectID: "magento-category-1",
+      conditions: [
+        {
+          pattern: "",
+          anchoring: "is",
+          context: "category-1",
+        },
+      ],
+      consequence: {
+        filterPromotes: true,
+      },
+      description: "Catégorie Vêtements > Homme > T-shirts",
+      enabled: true,
+      tags: ["visual-editor"],
+    };
 
-        const rule = {
-            "objectID": "magento-category-1",
-            "condition": {
-                "pattern": "",
-                "anchoring": "is",
-                "context": "category-1",
-            },
-            "consequence": {
-                "filterPromotes": true
-            },
-            "description": "Catégorie Vêtements > Homme > T-shirts",
-            "enabled": true,
-            "tags": [
-                "visual-editor"
-            ],
-        };
-
-
-        this.index.saveRule(rule).then(({ taskID }) => {
-            console.log(`taskID = ${taskID}`);
-        }).catch(err => {
-            console.log(err);
-        });
+    await this.confirm(
+      `Are you sure you want to SAVE rule "${rule.objectID}" in index ${this.indexName}?`
+    );
+    try {
+      const { taskID } = await this.client.saveRule({
+        indexName: this.indexName,
+        objectID: rule.objectID,
+        rule,
+      });
+      console.log(`taskID = ${taskID}`);
+    } catch (err) {
+      console.log(err);
     }
-}
+  }
+};

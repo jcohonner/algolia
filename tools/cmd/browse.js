@@ -23,7 +23,6 @@ module.exports = class browse extends AlgocliScript {
    * available variables:
    * - this.options: contains your command options
    * - this.client: Algolia client instance
-   * - this.index: Algolia Index instance
    */
   async run() {
     const browseParams = {

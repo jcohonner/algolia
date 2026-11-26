@@ -18,17 +18,12 @@ module.exports = class findInLogs extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        this.client.getLogs({ length: 100 }).then(result => {
-
-            const matched = result.logs.filter(log => {
-                return log.query_params ? log.query_params.indexOf('q') !== -1 : false;
-            })
-
-            console.log(JSON.stringify(matched, null, 2));
-
-        });
-    }
-}
+    const result = await this.client.getLogs({ length: 100 });
+    const matched = result.logs.filter((log) =>
+      log.query_params ? log.query_params.indexOf('q') !== -1 : false
+    );
+    console.log(JSON.stringify(matched, null, 2));
+  }
+};

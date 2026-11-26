@@ -17,23 +17,23 @@ module.exports = class saveSynonym extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
+    const objectID = 'tshirt';
+    const synonyms = ['tshirt', 'tshirts', 't shirt', 't shirts'];
 
-        const objectID = 'tshirt';
-        const synonyms = ['tshirt', 'tshirts', 't shirt', 't shirts']
-
-        this.index.saveSynonym(
-            {
-                objectID,
-                type: 'synonym',
-                synonyms
-            }
-        ).then(res => {
-            console.log(res);
-        }).catch(err => {
-            console.log(err);
-        })
+    await this.confirm(
+      `Are you sure you want to SAVE synonym "${objectID}" in index ${this.indexName}?`
+    );
+    try {
+      const res = await this.client.saveSynonym({
+        indexName: this.indexName,
+        objectID,
+        synonymHit: { objectID, type: 'synonym', synonyms },
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
     }
-}
+  }
+};

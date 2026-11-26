@@ -18,17 +18,23 @@ module.exports = class sendRequests extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        //console.log('running sendRequests', 'options =', this.options, 'index =', this.index);
-        try {
-            for (var i=0; i<this.options.nbRequests; i++) {
-                var result = await this.index.search('',{hitsPerPage:1, attributesToRetrieve:['*','-taxIncluded','taxIncluded.AL'], attributesToHighlight:[]});
-                console.log(result.hits[0]);
-            }
-        } catch (e) {
-            console.log('error', e);
-        }
+    try {
+      for (let i = 0; i < this.options.nbRequests; i++) {
+        const result = await this.client.searchSingleIndex({
+          indexName: this.indexName,
+          searchParams: {
+            query: '',
+            hitsPerPage: 1,
+            attributesToRetrieve: ['*', '-taxIncluded', 'taxIncluded.AL'],
+            attributesToHighlight: [],
+          },
+        });
+        console.log(result.hits[0]);
+      }
+    } catch (e) {
+      console.log('error', e);
     }
-}
+  }
+};

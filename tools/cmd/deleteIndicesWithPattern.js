@@ -1,9 +1,4 @@
 const AlgocliScript = require.main.require("./src/algocliScript");
-const readline = require("readline").createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
 module.exports = class deleteIndicesWithPattern extends AlgocliScript {
   /**
    * constructor
@@ -22,21 +17,11 @@ module.exports = class deleteIndicesWithPattern extends AlgocliScript {
     return "admin";
   }
 
-  askQuestion(query) {
-    return new Promise((resolve) =>
-      readline.question(query, (ans) => {
-        readline.close();
-        resolve(ans);
-      })
-    );
-  }
-
   /**
    * run function (mandatory)
    * available variables:
    * - this.options: contains your command options
    * - this.client: Algolia client instance
-   * - this.index: Algolia Index instance
    */
   async run() {
     if (this.options.pattern === undefined) {
@@ -46,32 +31,24 @@ module.exports = class deleteIndicesWithPattern extends AlgocliScript {
 
     const indices = await this.client.listIndices();
     const indicesToDelete = indices.items
-      .filter((index) =>
-        index.name.match(new RegExp(this.options.pattern, "g"))
-      )
+      .filter((index) => index.name.match(new RegExp(this.options.pattern)))
       .map((index) => index.name);
 
-    console.log("Indices to detele:", indicesToDelete);
+    console.log("Indices to delete:", indicesToDelete);
+    if (indicesToDelete.length === 0) return;
 
-    this.askQuestion(
-      `You are about to delete ${indicesToDelete.length} indices from ${this.options.appid}. Are you sure you want to proceed? (yes/no): `
-    ).then((answer) => {
-      if (answer.toLowerCase() === "yes") {
-        console.log("Deleting indices...");
-        // Continue your program here
+    await this.confirm(
+      `Are you sure you want to DELETE ${indicesToDelete.length} indices matching /${this.options.pattern}/ from app ${this.options.appid || this.appid} (this cannot be undone)?`
+    );
 
-        indicesToDelete.forEach((indexName) => {
-          try {
-            const index = this.client.initIndex(indexName);
-            index.delete();
-          } catch (error) {
-            console.erlogror(`Error deleting index ${indexName}:`, error);
-          }
-        });
-      } else {
-        console.error("canceled by user");
-        process.exit(0);
+    console.log("Deleting indices...");
+    for (const indexName of indicesToDelete) {
+      try {
+        await this.client.deleteIndex({ indexName });
+        console.log(`Deleted ${indexName}`);
+      } catch (error) {
+        console.error(`Error deleting index ${indexName}:`, error);
       }
-    });
+    }
   }
 };

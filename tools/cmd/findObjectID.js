@@ -18,41 +18,42 @@ module.exports = class findObjectID extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        //Looking for product_1200272
-        //product_374491
-        const searchForObjectID = 'MUPRD0002038';
+    //Looking for product_1200272
+    //product_374491
+    const searchForObjectID = 'MUPRD0002038';
+    const query = 'bakery';
 
-        const query= 'bakery';
-        let parameters = {
-            hitsPerPage: 500,
-            page:0,
-            filters: '',
-            distinct:false,
-            attributesToRetrieve:['objectID']
-        };
-        let result = {};
+    const searchParams = {
+      query,
+      hitsPerPage: 500,
+      page: 0,
+      filters: '',
+      distinct: false,
+      attributesToRetrieve: ['objectID'],
+    };
 
-        do {
-            console.log('page: ' + parameters.page);
+    let result = {};
+    do {
+      console.log('page: ' + searchParams.page);
+      result = await this.client.searchSingleIndex({
+        indexName: this.indexName,
+        searchParams,
+      });
+      if (searchParams.page === 0) {
+        console.log('total hits: ' + result.nbHits);
+        console.log('total pages: ' + result.nbPages);
+      }
 
-            result =  await this.index.search(query,parameters);
+      const found = result.hits.findIndex((hit) => hit.objectID === searchForObjectID);
+      if (found >= 0) {
+        console.log('found: ' + searchForObjectID + ' at position: ' + (searchParams.page * 500 + found + 1));
+        return;
+      }
+      searchParams.page++;
+    } while (searchParams.page < result.nbPages);
 
-            if (parameters.page === 0) {
-                console.log('total hits: ' + result.nbHits);
-                console.log('total pages: ' + result.nbPages);
-            }
-
-            const found = result.hits.findIndex(hit => hit.objectID === searchForObjectID);
-            if (found>=0) {
-                console.log('found: ' + searchForObjectID + ' at position: ' + (parameters.page*500+found+1));
-                return;
-            }
-            parameters.page++;
-        } while (parameters.page <= result.nbPages);
-
-        console.log('Object ID not found');
-    }
-}
+    console.log('Object ID not found');
+  }
+};

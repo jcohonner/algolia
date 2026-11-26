@@ -24,41 +24,37 @@ module.exports = class dumpAttributeValuesSearch extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        
-        const queries = [''];
-        const params = {
-            hitsPerPage:500,
-            attributesToRetrieve:["BrandNameEn","BrandNameAr"],
-            filters: "",
-            enableRules: true,
-            distinct:true,
-            //insideBoundingBox: [25.417204, 51.323518,25.117815, 51.746619]
-        };
+    const queries = [""];
+    const params = {
+      hitsPerPage: 500,
+      attributesToRetrieve: ["BrandNameEn", "BrandNameAr"],
+      filters: "",
+      enableRules: true,
+      distinct: true,
+      //insideBoundingBox: [[25.417204, 51.323518, 25.117815, 51.746619]]
+    };
 
-        
-        for (const query of queries) {
-             //first call results
-            const referenceResults = await this.index.search(query,params).then(function ({hits}) {                
-                return hits.map(hit => { return {BrandNameEn: hit.BrandNameEn, BrandNameAr: hit.BrandNameAr} });
-            }).catch(e => { console.log(e) });
+    for (const query of queries) {
+      try {
+        const { hits } = await this.client.searchSingleIndex({
+          indexName: this.indexName,
+          searchParams: { query, ...params },
+        });
+        const referenceResults = hits.map((hit) => ({
+          BrandNameEn: hit.BrandNameEn,
+          BrandNameAr: hit.BrandNameAr,
+        }));
 
-
-            //write to json file
-            const fs = require('fs');
-            fs.writeFileSync('output/snoonu-brandNames.json', JSON.stringify(referenceResults));
-
-           /* for (let i = 0; i < 20; i++) {
-                await this.index.search(query,params).then(function ({hits}) {
-                    const nbValidHits = hits.filter(hit => referenceResults.indexOf(hit.objectID) !== -1).length;
-                    console.log(`Iteration ${i} - ${nbValidHits} found in the ${referenceResults.length} reference results`);
-                }.bind(this)).catch(e => { console.log(e) });
-            }*/
-        }
-
-
-
+        //write to json file
+        require("fs").writeFileSync(
+          "output/snoonu-brandNames.json",
+          JSON.stringify(referenceResults)
+        );
+      } catch (e) {
+        console.log(e);
+      }
     }
-}
+  }
+};

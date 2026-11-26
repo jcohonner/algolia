@@ -25,10 +25,9 @@ module.exports = class sendEvents extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        //console.log('running sendEvents', 'options =', this.options, 'index =', this.index);
+        //console.log('running sendEvents', 'options =', this.options, 'index =', this.indexName);
         
         const events= [
             {

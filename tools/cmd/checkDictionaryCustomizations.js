@@ -30,7 +30,6 @@ module.exports = class checkDictionaryCustomizations extends AlgocliScript {
    * available variables:
    * - this.options: contains your command options
    * - this.client: Algolia client instance
-   * - this.index: Algolia Index instance
    */
   async run() {
     let results = await this.client.customGet({

@@ -25,14 +25,11 @@ module.exports = class getSettings extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        console.log('running getSettings', 'options =', this.options, 'index =', this.index);
-           
-        const settings = await this.index.getSettings()
+    const settings = await this.client.getSettings({ indexName: this.indexName });
 
-        //print the settings full object
-        console.log('settings =', settings);
-    }
-}
+    //print the settings full object
+    console.log('settings =', settings);
+  }
+};

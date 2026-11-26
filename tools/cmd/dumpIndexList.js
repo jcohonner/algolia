@@ -19,10 +19,9 @@ module.exports = class dumpIndexList extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        //console.log('running dumpIndexList', 'options =', this.options, 'index =', this.index);
+        //console.log('running dumpIndexList', 'options =', this.options, 'index =', this.indexName);
 
         this.client.listIndices().then(function(result) {
             //write list to csv file

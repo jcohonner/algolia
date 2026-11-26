@@ -25,17 +25,15 @@ module.exports = class copyRules extends AlgocliScript {
   /**
    * get all rules from index
    */
-  async getAllRules(index) {
-    let rules = [];
-    return await index
-      .browseRules({
-        batch: (batch) => {
-          rules = rules.concat(batch);
-        },
-      })
-      .then(() => {
-        return rules;
-      });
+  async getAllRules(indexName) {
+    const rules = [];
+    await this.client.browseRules({
+      indexName,
+      aggregator: (response) => {
+        rules.push(...response.hits);
+      },
+    });
+    return rules;
   }
 
     /**
@@ -43,7 +41,6 @@ module.exports = class copyRules extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
 
@@ -62,16 +59,18 @@ module.exports = class copyRules extends AlgocliScript {
         }
 
 
-        const destIndex = this.client.initIndex(this.options.destIndexName);
-        const rules = await this.getAllRules(this.index);
-        console.log(rules);
+        const rules = await this.getAllRules(this.indexName);
         try {
           console.log(`Copying ${rules.length} rules from ${this.indexName} to ${destIndexName}`);
-          const response = await  destIndex.saveRules(rules,);   
+          const response = await this.client.saveRules({
+            indexName: destIndexName,
+            rules,
+            clearExistingRules,
+          });
           console.log(response);
-        } catch (e) { 
-          console.error(`Error setting settings on destination index: ${e.message}`);
-          exit(1);            
+        } catch (e) {
+          console.error(`Error copying rules to destination index: ${e.message}`);
+          exit(1);
         }
     }
 }

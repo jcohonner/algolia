@@ -17,7 +17,6 @@ module.exports = class appSize extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
         this.client.listIndices().then(({ items }) => {

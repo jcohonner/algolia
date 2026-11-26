@@ -16,9 +16,12 @@ module.exports = class deleteIndex extends AlgocliScript {
    * available variables:
    * - this.options: contains your command options
    * - this.client: Algolia client instance
-   * - this.index: Algolia Index instance
    */
   async run() {
-    this.client.deleteIndex({ indexName: this.indexName });
+    await this.confirm(
+      `Are you sure you want to DELETE index ${this.indexName} (this cannot be undone)?`
+    );
+    const response = await this.client.deleteIndex({ indexName: this.indexName });
+    console.log("Index deleted", response);
   }
 };

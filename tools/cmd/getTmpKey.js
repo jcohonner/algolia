@@ -23,11 +23,13 @@ module.exports = class getTmpKey extends AlgocliScript {
    * available variables:
    * - this.options: contains your command options
    * - this.client: Algolia client instance
-   * - this.index: Algolia Index instance
    */
   async run() {
-    const tmpKey = this.client.generateSecuredApiKey(this.apikey, {
-      validUntil: new Date().getTime() - 1000 * 60 * 60 * 24 * 7,
+    // validUntil is a unix timestamp in seconds
+    const validUntil = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7;
+    const tmpKey = this.client.generateSecuredApiKey({
+      parentApiKey: this.apikey,
+      restrictions: { validUntil },
     });
     console.log("temporary key valid 1 week = ", tmpKey);
   }

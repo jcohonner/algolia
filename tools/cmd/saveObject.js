@@ -17,15 +17,14 @@ module.exports = class saveObject extends AlgocliScript {
      * available variables:
      * - this.options: contains your command options
      * - this.client: Algolia client instance
-     * - this.index: Algolia Index instance
      */
     async run() {
-        //console.log('running saveObject', 'options =', this.options, 'index =', this.index);
+    const body = { objectID: '00000300', name: 'myName' };
 
-
-
-        this.index.saveObject({objectID: '00000300', name: 'myName'}).then(({ taskID }) => {
-            console.log(`taskID = ${taskID}`);
-        });
-    }
-}
+    await this.confirm(
+      `Are you sure you want to SAVE record ${body.objectID} in index ${this.indexName}?`
+    );
+    const { taskID } = await this.client.saveObject({ indexName: this.indexName, body });
+    console.log(`taskID = ${taskID}`);
+  }
+};
