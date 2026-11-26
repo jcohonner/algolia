@@ -1,0 +1,25 @@
+[
+  {
+    "consequence": {
+      "userData": {
+        "facetMapping": {
+          "price": {
+            "widget": "range"
+          },
+          "featured": {
+            "widget": "toggle"
+          },
+          "actors": {
+            "widget": "list",
+            "props": {
+              "searchable": true
+            }
+          }
+        }
+      },
+      "filterPromotes": true
+    },
+    "enabled": true,
+    "objectID": "qr-widget-selector"
+  }
+]

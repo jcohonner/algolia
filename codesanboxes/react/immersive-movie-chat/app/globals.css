@@ -1,0 +1,36 @@
+:root {
+  --bg-0: #08101b;
+  --bg-1: #10233a;
+  --bg-2: #1f3f63;
+  --surface: rgba(7, 16, 28, 0.75);
+  --surface-soft: rgba(255, 255, 255, 0.08);
+  --line: rgba(255, 255, 255, 0.16);
+  --text: #f2f7ff;
+  --text-soft: #bfd4ef;
+  --accent: #ffd87a;
+  --accent-2: #ffb74f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: radial-gradient(circle at 20% 0%, var(--bg-2), transparent 45%),
+    radial-gradient(circle at 80% 100%, #14314e, transparent 50%),
+    linear-gradient(165deg, var(--bg-0) 5%, var(--bg-1) 55%, #0a1c31 100%);
+  color: var(--text);
+  font-family: 'Avenir Next', 'Segoe UI', sans-serif;
+}
+
+main {
+  min-height: 100dvh;
+}
+
+button,
+input {
+  font: inherit;
+}

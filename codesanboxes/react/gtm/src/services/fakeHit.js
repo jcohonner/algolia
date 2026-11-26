@@ -1,0 +1,28 @@
+export default {
+  objectID: "demo",
+  original_title: "Algolia: The Speed of Search",
+  original_language: "fr",
+  release_date: 1349049600,
+  vote_average: 10,
+  vote_count: 18904,
+  popularity: 6260.858,
+  year: 2012,
+  actors: ["Nicolas Dessaigne", "Julien Lemoine"],
+  director: "Bernadette Nixon",
+  backdrop: "/assets/algoflix-backdrop.jpg",
+  title: "Algolia: The Speed of Search",
+  overview:
+    "In a world where information is power, one company dared to redefine how we find it. From a small startup with big ambitions to a global force shaping the future of search, Algolia tells the untold story of innovation, speed, and the relentless pursuit of instant answers.",
+  genres: ["Action", "Adventure", "Science Fiction"],
+  poster: "/assets/algoflix-poster.jpg",
+  budget: 0,
+  revenue: 0,
+  price: 9.99,
+  on_sale: false,
+  featured: true,
+  categories: [
+    "Genres > Action",
+    "Genres > Adventure",
+    "Genres > Science Fiction",
+  ],
+};

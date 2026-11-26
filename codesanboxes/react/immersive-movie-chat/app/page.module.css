@@ -1,0 +1,211 @@
+.page {
+  min-height: 100dvh;
+  padding: 1rem;
+  display: grid;
+  grid-template-rows: 2fr 1fr;
+  gap: 0.75rem;
+}
+
+.carouselZone {
+  min-height: 0;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.15));
+  backdrop-filter: blur(6px);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+}
+
+.header {
+  padding: 1rem 1rem 0.5rem;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+}
+
+.header p {
+  margin: 0.25rem 0 0;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.carouselShell {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.3rem 0.8rem;
+}
+
+.arrow {
+  border: 0;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  color: #001224;
+  background: linear-gradient(145deg, var(--accent), var(--accent-2));
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.track {
+  display: flex;
+  gap: 0.8rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0.3rem;
+  min-height: 0;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.posterCard {
+  min-width: 74%;
+  max-width: 74%;
+  scroll-snap-align: center;
+  border-radius: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.posterWrap {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+}
+
+.posterWrap img {
+  object-fit: cover;
+}
+
+.posterFallback {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  text-align: center;
+  color: var(--text-soft);
+  background: linear-gradient(165deg, rgba(255, 216, 122, 0.2), rgba(16, 35, 58, 0.2));
+}
+
+.year {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.movieMeta {
+  padding: 0.65rem 0.8rem 0.85rem;
+}
+
+.movieMeta h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.movieMeta p {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.chatZone {
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--surface);
+  backdrop-filter: blur(6px);
+  padding: 0.8rem;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 0.7rem;
+  min-height: 0;
+}
+
+.bubbleStack {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.bubble {
+  margin: 0;
+  width: fit-content;
+  max-width: 92%;
+  padding: 0.65rem 0.8rem;
+  border-radius: 0.95rem;
+  line-height: 1.3;
+  font-size: 0.92rem;
+}
+
+.userBubble {
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.agentBubble {
+  background: rgba(255, 216, 122, 0.16);
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.45rem;
+}
+
+.input {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+  color: var(--text);
+  padding: 0.72rem 0.9rem;
+  outline: none;
+}
+
+.input::placeholder {
+  color: rgba(231, 240, 255, 0.56);
+}
+
+.send {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.72rem 0.95rem;
+  font-weight: 700;
+  color: #0a1d30;
+  background: linear-gradient(145deg, var(--accent), var(--accent-2));
+}
+
+.send:disabled {
+  opacity: 0.45;
+}
+
+@media (min-width: 900px) {
+  .page {
+    max-width: 950px;
+    margin: 0 auto;
+  }
+
+  .posterCard {
+    min-width: 34%;
+    max-width: 34%;
+  }
+}
